@@ -31,7 +31,7 @@
   },"5": {
     "doc": "Overview",
     "title": "Notable Compression Project Mentions",
-    "content": "There are also some other notable projects which I’ve included at the end, but either they aren’t active enough or univeral to be included here. Notable mentions: . | LZHAM (not super active) | Google’s WebP (only for images, but a notable mention) | Dropbox’s DivANS | Dropbox’s avrecode | H.266/VCC Codec (domain-specific for video) | Pied Piper Middle-Out (abandoned and closed-source unfortunately) | . ",
+    "content": "There are also some other notable projects which I’ve included at the end, but either they aren’t active enough or univeral to be included here. Notable mentions: . | LZHAM (not super active) | Google’s WebP (only for images) | Dropbox’s DivANS | Dropbox’s avrecode | H.266/VCC Codec (domain-specific for video) | Pied Piper Middle-Out (abandoned and closed-source unfortunately) | . ",
     "url": "https://go-compression.github.io//#notable-compression-project-mentions",
     "relUrl": "/#notable-compression-project-mentions"
   },"6": {

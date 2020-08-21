@@ -47,7 +47,7 @@ There are also some other notable projects which I've included at the end, but e
 Notable mentions:
 
 - [LZHAM](https://github.com/richgel999/lzham_codec) (not super active)
-- [Google's WebP](https://developers.google.com/speed/webp/) (only for images, but a notable mention)
+- [Google's WebP](https://developers.google.com/speed/webp/) (only for images)
 - [Dropbox's DivANS](https://github.com/dropbox/divans)
 - [Dropbox's avrecode](https://github.com/dropbox/avrecode)
 - [H.266/VCC Codec](https://www.leawo.org/tutorial/h266-vs-h-265-whats-the-difference-1398.html) (domain-specific for video)
