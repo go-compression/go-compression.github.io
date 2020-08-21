@@ -1,1 +1,6 @@
-theme: just-the-docs
+remote_theme: pmarsceill/just-the-docs
+name: The Hitchhiker's Guide to Compression
+description: A collection of resources and posts to help people understand compression algorithms.
+footer-links:
+  github: go-compression/go-compression.github.io
+url: https://go-compression.github.io/
