@@ -1,5 +1,3 @@
-remote_theme: pmarsceill/just-the-docs
-theme: "just-the-docs"
 name: The Hitchhiker's Guide to Compression
 title: The Hitchhiker's Guide to Compression
 description: A collection of resources and posts to help people understand compression algorithms.
@@ -16,6 +14,9 @@ source: docs
 
 readme_index:
   enabled: false
+
+remote_theme: pmarsceill/just-the-docs
+# theme: "just-the-docs"
 
 # Aux links for the upper right navigation
 aux_links:
