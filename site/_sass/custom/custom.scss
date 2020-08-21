@@ -1,0 +1,24 @@
+$sidebar_width: 364px;
+
+.site-header {
+  height: 90px;
+  max-height: 90px;
+}
+
+@media (min-width: 66.5rem) {
+  .site-nav,
+  .site-header,
+  .site-footer {
+    width: $sidebar_width;
+  }
+
+  $sidebar_width_offset: calc((100%) / 2 - #{$sidebar_width});
+
+  .side-bar {
+    width: $sidebar_width_offset;
+  }
+
+  .main {
+    margin-left: $sidebar_width_offset;
+  }
+}

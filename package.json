@@ -1,0 +1,25 @@
+{
+  "name": "go-compression.github.io",
+  "version": "1.0.0",
+  "description": "A collection of resources and posts to help people understand compression algorithms.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/go-compression/go-compression.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/go-compression/go-compression.github.io/issues"
+  },
+  "homepage": "https://github.com/go-compression/go-compression.github.io#readme",
+  "devDependencies": {
+    "browser-sync": "^2.26.12",
+    "gulp": "^4.0.2",
+    "gulp-shell": "^0.8.0",
+    "lodash": "^4.17.20"
+  }
+}
