@@ -40,5 +40,17 @@
     "content": " ",
     "url": "https://go-compression.github.io//",
     "relUrl": "/"
+  },"7": {
+    "doc": "Lempel-Ziv",
+    "title": "Lempel-Ziv",
+    "content": "This article is currently a stub. ",
+    "url": "https://go-compression.github.io//algorithms/lz.html",
+    "relUrl": "/algorithms/lz.html"
+  },"8": {
+    "doc": "Overview of Algorithms",
+    "title": "Overview of Algorithms",
+    "content": "The following is intended to be a comprehensive list of lossless compression algorithms (in no particular order), however if you feel like an algorithm is missing, please let us know. | Run-length Coding | Range Coding | Lempel-Ziv . | LZ77 | LZ78 | LZSS | LZW | . | Variable-length Coding | Huffman Coding | Arithmetic Coding | Dynamic Markov Compression | FLATE | . For a more complete list, check out these Wikipedia pages on lossless algorithms and lossy algorithms. ",
+    "url": "https://go-compression.github.io//algorithms/overview.html",
+    "relUrl": "/algorithms/overview.html"
   }
 }
