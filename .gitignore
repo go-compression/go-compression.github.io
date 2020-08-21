@@ -2,6 +2,9 @@
 .vscode/
 .idea/
 
+## Ruby
+.bundle/
+vendor/
 
 ## Jekyll
 _site/

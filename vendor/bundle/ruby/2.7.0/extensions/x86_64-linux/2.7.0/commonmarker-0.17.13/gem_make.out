@@ -1,5 +1,5 @@
 current directory: /home/travis/build/go-compression/go-compression.github.io/vendor/bundle/ruby/2.7.0/gems/commonmarker-0.17.13/ext/commonmarker
-/home/travis/.rvm/rubies/ruby-2.7.1/bin/ruby -I /home/travis/.rvm/rubies/ruby-2.7.1/lib/ruby/2.7.0 -r ./siteconf20200821-5864-7psrzp.rb extconf.rb
+/home/travis/.rvm/rubies/ruby-2.7.1/bin/ruby -I /home/travis/.rvm/rubies/ruby-2.7.1/lib/ruby/2.7.0 -r ./siteconf20200821-5829-1o87dym.rb extconf.rb
 creating Makefile
 
 current directory: /home/travis/build/go-compression/go-compression.github.io/vendor/bundle/ruby/2.7.0/gems/commonmarker-0.17.13/ext/commonmarker
@@ -80,4 +80,4 @@ linking shared-object commonmarker/commonmarker.so
 
 current directory: /home/travis/build/go-compression/go-compression.github.io/vendor/bundle/ruby/2.7.0/gems/commonmarker-0.17.13/ext/commonmarker
 make "DESTDIR=" install
-/usr/bin/install -m 0755 commonmarker.so ./.gem.20200821-5864-1nv9vvo/commonmarker
+/usr/bin/install -m 0755 commonmarker.so ./.gem.20200821-5829-kee8p9/commonmarker

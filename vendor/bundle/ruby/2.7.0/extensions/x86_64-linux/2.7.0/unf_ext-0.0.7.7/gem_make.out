@@ -1,5 +1,5 @@
 current directory: /home/travis/build/go-compression/go-compression.github.io/vendor/bundle/ruby/2.7.0/gems/unf_ext-0.0.7.7/ext/unf_ext
-/home/travis/.rvm/rubies/ruby-2.7.1/bin/ruby -I /home/travis/.rvm/rubies/ruby-2.7.1/lib/ruby/2.7.0 -r ./siteconf20200821-5864-7sk1w2.rb extconf.rb
+/home/travis/.rvm/rubies/ruby-2.7.1/bin/ruby -I /home/travis/.rvm/rubies/ruby-2.7.1/lib/ruby/2.7.0 -r ./siteconf20200821-5829-1bgmzxj.rb extconf.rb
 checking for -lstdc++... yes
 creating Makefile
 
@@ -13,4 +13,4 @@ linking shared-object unf_ext.so
 
 current directory: /home/travis/build/go-compression/go-compression.github.io/vendor/bundle/ruby/2.7.0/gems/unf_ext-0.0.7.7/ext/unf_ext
 make "DESTDIR=" install
-/usr/bin/install -m 0755 unf_ext.so ./.gem.20200821-5864-1p6t60x
+/usr/bin/install -m 0755 unf_ext.so ./.gem.20200821-5829-1pdca3e
