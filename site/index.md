@@ -1,6 +1,6 @@
 ---
 layout: default
-title: The Hitchhiker's Guide to Compression
+title: Overview
 nav_order: 1
 ---
 
