@@ -1,8 +1,8 @@
 name: The Hitchhiker's Guide to Compression
 title: The Hitchhiker's Guide to Compression
 description: A collection of resources and posts to help people understand compression algorithms.
-footer-links:
-  github: go-compression/go-compression.github.io
+# footer-links:
+#   github: go-compression/go-compression.github.io
 url: https://go-compression.github.io/
 
 exclude: [node_modules, gulpfile.js]
