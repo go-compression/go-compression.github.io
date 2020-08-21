@@ -5,7 +5,9 @@ var browserSync = require("browser-sync").create();
 // Task for building blog when something changed:
 gulp.task(
   "build",
-  shell.task(["bundle exec jekyll serve --watch --incremental"])
+  shell.task([
+    "bundle exec jekyll serve --watch --incremental --config _config-dev.yml",
+  ])
 );
 // If you don't use bundle:
 // gulp.task('build', shell.task(['jekyll serve']));
