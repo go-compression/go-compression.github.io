@@ -51,3 +51,4 @@ Notable mentions:
 - [Dropbox's DivANS](https://github.com/dropbox/divans)
 - [Dropbox's avrecode](https://github.com/dropbox/avrecode)
 - [H.266/VCC Codec](https://www.leawo.org/tutorial/h266-vs-h-265-whats-the-difference-1398.html) (domain-specific for video)
+- [Pied Piper Middle-Out](http://www.piedpiper.com/) (abandoned and closed-source unfortunately)
