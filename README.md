@@ -46,19 +46,19 @@ Now, it's as simple as running `gulp`
 ```console
 $ gulp
 [Browsersync] Access URLs:
-`-------------------------------------`
+-------------------------------------
        Local: http://localhost:3000
     External: http://172.21.61.88:3000
-`-------------------------------------`
+-------------------------------------
           UI: http://localhost:3001
  UI External: http://localhost:3001
-`-------------------------------------`
+-------------------------------------
 ```
 
 You can now navigate to [localhost:3000](http://localhost:3000) and any changes you make to the site should now be shown live!
 
-## The Tale of Two \_config.yml's
+## The Tale of Two `_config.yml`'s
 
-You may wonder why you use the \_config-dev.yml to run it locally instead of just the \_config.yml, and the answer is that GitHub Pages doesn't like complicated build processes.
+You may wonder why you use the `_config-dev.yml` to run it locally instead of just the `_config.yml`, and the answer is that GitHub Pages doesn't like complicated build processes.
 
-The \_config-dev.yml is what's used to build the site locally and by Travis CI, once built Travis will upload the compiled files to the `(gh-pages)[https://github.com/go-compression/go-compression.github.io/tree/gh-pages]` branch. Once pushed, GitHub Pages will use the \_travis.yml file to serve the compiled site from the docs/ folder. This means that you can use any Jekyll build process you want, and GitHub Pages will serve the compiled version.
+The `_config-dev.yml` is what's used to build the site locally and by Travis CI, once built Travis will upload the compiled files to the [gh-pages](https://github.com/go-compression/go-compression.github.io/tree/gh-pages) branch. Once pushed, GitHub Pages will use the `_travis.yml` file to serve the compiled site from the docs/ folder. This means that you can use any Jekyll build process you want, and GitHub Pages will serve the compiled version.
