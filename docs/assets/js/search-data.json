@@ -89,10 +89,34 @@
     "url": "https://go-compression.github.io//algorithms/overview.html",
     "relUrl": "/algorithms/overview.html"
   },"15": {
-    "doc": "",
-    "title": "",
-    "content": "--- layout: default title: Reference nav_order: 8 --- # Reference This page serves to be a reference to topics that aren't directly related to compression, but inveitably come into play. A basic understanding of these concepts are invaluable when building your own implementation or algorithm. ## Bytes, Bits, and Nibbles Stub. ## File Encodings Stub. ## Unix Magic Types Stub. ## Compression Ratio Calculation Stub. https://en.wikipedia.org/wiki/Data_compression_ratio ",
+    "doc": "Reference",
+    "title": "Reference",
+    "content": "This page serves to be a reference to topics that aren’t directly related to compression, but inveitably come into play. A basic understanding of these concepts are invaluable when building your own implementation or algorithm. ",
     "url": "https://go-compression.github.io//reference.html",
     "relUrl": "/reference.html"
+  },"16": {
+    "doc": "Reference",
+    "title": "Bytes, Bits, and Nibbles",
+    "content": "Stub. ",
+    "url": "https://go-compression.github.io//reference.html#bytes-bits-and-nibbles",
+    "relUrl": "/reference.html#bytes-bits-and-nibbles"
+  },"17": {
+    "doc": "Reference",
+    "title": "File Encodings",
+    "content": "Stub. ",
+    "url": "https://go-compression.github.io//reference.html#file-encodings",
+    "relUrl": "/reference.html#file-encodings"
+  },"18": {
+    "doc": "Reference",
+    "title": "Unix Magic Types",
+    "content": "Stub. ",
+    "url": "https://go-compression.github.io//reference.html#unix-magic-types",
+    "relUrl": "/reference.html#unix-magic-types"
+  },"19": {
+    "doc": "Reference",
+    "title": "Compression Ratio Calculation",
+    "content": "Stub. https://en.wikipedia.org/wiki/Data_compression_ratio . ",
+    "url": "https://go-compression.github.io//reference.html#compression-ratio-calculation",
+    "relUrl": "/reference.html#compression-ratio-calculation"
   }
 }
