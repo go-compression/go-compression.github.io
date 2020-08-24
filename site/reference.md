@@ -1,4 +1,3 @@
-
 ---
 layout: default
 title: Reference
@@ -19,7 +18,7 @@ Stub.
 
 ## Unix Magic Types
 
-Stub. 
+Stub.
 
 ## Compression Ratio Calculation
 
