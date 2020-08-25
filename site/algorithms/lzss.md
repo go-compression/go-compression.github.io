@@ -11,7 +11,7 @@ Lempel-Ziv-Storer-Szymanski, which we'll refer to as LZSS, is a simple variation
 
 The idea behind this is that it will never increase the size of a file by adding tokens everywhere for repeated letters. You can imagine that LZ77 would easily increase the file size if it simply encoded every repeated letter "e" or "i" as a token, which may take at least 5 bytes depending on the file and implementation.
 
-## Example
+## Implementing an Encoder
 
 Let's take a look at some examples, so we can _see_ exactly how it works. The [wikipedia article for LZSS](https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski) has a great example for this, which I'll use here, and it's worth a read as an introduction to LZSS.
 
@@ -234,6 +234,12 @@ def elements_in_array(check_elements, elements):
         i += 1
     return -1
 
+text = "SAM SAM"
+encoding = "utf-8"
+
+text_bytes = text.encode(encoding)
+
+search_buffer = [] # Array of integers, representing bytes
 check_characters = [] # Array of integers, representing bytes
 
 i = 0
@@ -258,4 +264,190 @@ for char in text_bytes:
     i += 1
 ```
 
-There's quite a lot to unpack here so let's go through it line by line.
+Output:
+
+```
+S
+A
+M
+
+<4,3>
+```
+
+It works! But there's quite a lot to unpack here so let's go through it line by line.
+
+The first and largest addition is the `elements_in_array` function. The code here essentially checks to see if specific elements are within an array in an exact order. If so, it will return the index in the array where the elements start, and if not it will return -1.
+
+Moving on to our main function loop we can see now have `check_characters` defined at the top. This variable tracks what characters we're looking for in our `search_buffer`. As we loop through, we use `check_characters.append(char)` to add the current character to the characters we're searching. Then we check to see if `check_characters` can be found within `search_buffer` with `elements_in_array`.
+
+Now we have the best part: the logic. If we couldn't find a match or it's the last character we want to output something. If we couldn't find more than one character in the `search_buffer` then that means `check_characters` minus the last character was found, so we'll output a token representing `check_characters` minus the last character. Otherwise, we couldn't find a match for a single character so let's just output that character.
+
+And that's essentially LZ77! Try it out for yourself with some different strings to see for yourself. However you might notice that we're trying to implement LZSS, not LZ77, so we have one more piece to implement.
+
+### Comparing Token Sizes
+
+This crucial piece is the process described earlier of comparing the size of tokens versus the text it represents. Essnetially we're saying, if the token takes up more space than the text it's representing then don't output a token, just output the text.
+![](/assets/LZ1.png)
+
+Lucky for us this is a pretty simple change. Our main loop now looks like so:
+
+```python
+for char in text_bytes:
+    check_characters.append(char)
+    index = elements_in_array(check_characters, search_buffer) # The index where the characters appears in our search buffer
+
+    if index == -1 or i == len(text_bytes) - 1:
+        if len(check_characters) > 1:
+            index = elements_in_array(check_characters[:-1], search_buffer)
+            offset = i - index - len(check_characters) + 1 # Calculate the relative offset
+            length = len(check_characters) # Set the length of the token (how many character it represents)
+
+            token = f"<{offset},{length}>" # Build our token
+
+            if len(token) > length:
+                # Length of token is greater than the length it represents, so output the character
+                print(bytes(check_characters).decode(encoding)) # Print the characters
+            else:
+                print(token) # Print our token
+        else:
+            print(bytes([char]).decode(encoding)) # Print the character
+
+        check_characters = []
+
+    search_buffer.append(char) # Add the character to our search buffer
+
+    i += 1
+```
+
+Output:
+
+```
+S
+A
+M
+
+SAM
+```
+
+The key is the `len(token) > length` which checks if the length of the token is longer than the length of the text it's representing. If it is, it simply outputs the characters, otherwise it outputs the token.
+
+### Sliding Windows
+
+The last piece to the puzzle is something you might have noticed if you're already trying to compress large file: the search buffer gets **big**. Let's say we're compressing a 1 Gb file. After we go over each character, we add it to the search buffer and continue, though each iteration we also search the entire search buffer for certain characters. This quickly adds up for larger files. In our 1 Gb file scenario, near the end we'll have to search almost 1 billion bytes to **encode a single character**.
+
+It should be pretty obvious that this _very inefficient_. And unfortunately, there is no magic solution, you have to make a tradeoff. With every compression algorithm you have to decide between speed and compression ratio. Do you want a fast algorithm that can't reduce the file size very much, or a slow algorithm that reduces the file size more? The answer is: it depends. And so, the tradeoff in LZ77's case is to create a "sliding window".
+![](/assets/LZ3.png)
+
+The "sliding window" is actually quite simple, all you do is cap off the maximum size of the search buffer. When you add a character to the search buffer that makes it larger than the maximum size of the sliding window then you remove the first character. That way the window is "sliding" as you move through the file, and the algorithm doesn't slow down!
+
+```python
+max_sliding_window_size = 4096
+
+...
+
+for char in text_bytes:
+
+	...
+
+    search_buffer.append(char) # Add the character to our search buffer
+
+    if len(search_buffer) > max_sliding_window_size: # Check to see if it exceeds the max_sliding_window_size
+        search_buffer = search_buffer[1:] # Remove the first element from the search_buffer
+
+    ...
+```
+
+These changes should be pretty self-explanatory. We're just checking to see if the length of the `search_buffer` is greater than the `max_sliding_window_size`, and if so we pop the first element off of the `search_buffer`.
+
+Keep in mind that while a maximum sliding window size of 4096 character is typical, it may be hard to use during testing, try setting it much lower (like 3-4) and test it with some different strings to see how it works.
+
+### Putting it all together
+
+That's everything that makes up LZSS, but for the sake of completing our example, let's clean it up so we can call a function with some text, an optional `max_sliding_window_size`, and have it return the encoded text, rather than just printing it out.
+
+```python
+encoding = "utf-8"
+
+def encode(text, max_sliding_window_size=4096):
+	text_bytes = text.encode(encoding)
+
+    search_buffer = [] # Array of integers, representing bytes
+    check_characters = [] # Array of integers, representing bytes
+    output = [] # Output array
+
+    i = 0
+    for char in text_bytes:
+        check_characters.append(char)
+        index = elements_in_array(check_characters, search_buffer) # The index where the characters appears in our search buffer
+
+        if index == -1 or i == len(text_bytes) - 1:
+            if len(check_characters) > 1:
+                index = elements_in_array(check_characters[:-1], search_buffer)
+                offset = i - index - len(check_characters) + 1 # Calculate the relative offset
+                length = len(check_characters) # Set the length of the token (how many character it represents)
+
+                token = f"<{offset},{length}>" # Build our token
+
+                if len(token) > length:
+                    # Length of token is greater than the length it represents, so output the character
+                    output.extend(check_characters) # Output the characters
+                else:
+                    output.extend(token.encode(encoding)) # Output our token
+            else:
+                output.extend(check_characters) # Output the character
+
+            check_characters = []
+
+        search_buffer.append(char) # Add the character to our search buffer
+
+        if len(search_buffer) > max_sliding_window_size: # Check to see if it exceeds the max_sliding_window_size
+            search_buffer = search_buffer[1:] # Remove the first element from the search_buffer
+
+        i += 1
+
+    return bytes(output)
+
+print(encode("SAM SAM", 1).decode(encoding))
+print(encode("supercalifragilisticexpialidocious supercalifragilisticexpialidocious", 1024).decode(encoding))
+print(encode("LZSS will take over the world!", 256).decode(encoding))
+print(encode("It even works with 😀s thanks to UTF-8", 16).decode(encoding))
+```
+
+The function definition is pretty simple, we can just move our `text` and `max_sliding_window_size` outside of the function and wrap our code in a function definition. Then we simply call it with some different values to test it, and that's it!
+
+The finished code can be found in [lzss.py](https://github.com/go-compression/examples/blob/master/lz/lzss/lzss_encoder.py) in the examples GitHub repo.
+
+## Implementing a Decoder
+
+What's the use of encoding something some text if we can't decode it? For that we'll need to build ourselves a decoder.
+
+Luckily for us, building a decoder is actually much simpler than an encoder because all it needs to know how to do is convert a token ("<5,2>") into the literal text it represents. The decoder doesn't care about search buffers, sliding windows, or token lengths, it only has one job.
+
+So, let's get started. We're going to decode character-by-character just like our encoder so we'll start with our main loop inside of a function. We'll also need to encode and decode the strings so we'll keep the `encoding = "utf-8"`.
+
+```python
+encoding = "utf-8"
+
+def decode(text):
+
+    text_bytes = text.encode(encoding) # The text encoded as bytes
+    output = [] # The output characters
+
+    for char in text_bytes:
+        output.append(char) # Add the character to our output
+
+    return bytes(output)
+
+print(decode("supercalifragilisticexpialidocious <35,34>").decode(encoding))
+```
+
+Here we're setting up the structure for the rest of our decoder by setting up our main loop and declaring everything within a neat self-contained function.
+
+### Identifying Tokens
+
+The next step is to start doing some actual decoding. The goal of our decoder is to convert a token into text, so we need to first identify a token and extract our `offset` and `length` before we can convert it into text.
+![](/assets/LZ4.png)
+
+> Notice the various components of a token that need to be identified and extracted so we can find the text they represent
+
+Let's make a small change so we can identify the start and end of a token.
