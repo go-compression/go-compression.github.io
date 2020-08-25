@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/pmarsceill/just-the-docs.git
+  revision: 6ac67d22288600cdfa1662da837581a4ce4acdb3
+  branch: v0.3.2
+  specs:
+    just-the-docs (0.3.2)
+      jekyll (>= 3.8.5)
+      jekyll-seo-tag (~> 2.0)
+      rake (>= 12.3.1, < 13.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -192,10 +202,6 @@ GEM
       gemoji (~> 3.0)
       html-pipeline (~> 2.2)
       jekyll (>= 3.0, < 5.0)
-    just-the-docs (0.3.1)
-      jekyll (>= 3.8.5)
-      jekyll-seo-tag (~> 2.0)
-      rake (>= 12.3.1, < 13.1.0)
     kramdown (2.3.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -258,7 +264,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
-  just-the-docs
+  just-the-docs!
 
 BUNDLED WITH
    2.1.4

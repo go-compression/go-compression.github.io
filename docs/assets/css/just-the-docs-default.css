@@ -223,11 +223,11 @@ body { position: relative; padding-bottom: 4rem; overflow-y: scroll; }
 .main-content .task-list-item-checkbox { margin-right: 0.6em; }
 .main-content hr + * { margin-top: 0; }
 .main-content h1:first-of-type { margin-top: 0.5em; }
-.main-content dl { display: grid; grid-template-columns: max-content 1fr; }
+.main-content dl { display: grid; grid-template: auto / 10em 1fr; }
 .main-content dt, .main-content dd { margin: 0.25em 0; }
-.main-content dt { text-align: right; }
+.main-content dt { grid-column: 1; font-weight: 500; text-align: right; }
 .main-content dt::after { content: ":"; }
-.main-content dd { margin-left: 1em; font-weight: 500; }
+.main-content dd { grid-column: 2; margin-bottom: 0; margin-left: 1em; }
 .main-content .anchor-heading { position: absolute; right: -1rem; width: 1.5rem; height: 100%; padding-right: 0.25rem; padding-left: 0.25rem; overflow: visible; }
 @media (min-width: 50rem) { .main-content .anchor-heading { right: auto; left: -1.5rem; } }
 .main-content .anchor-heading svg { display: inline-block; width: 100%; height: 100%; color: #7253ed; visibility: hidden; }
@@ -258,6 +258,11 @@ body { position: relative; padding-bottom: 4rem; overflow-y: scroll; }
 .nav-list .nav-list-item > .nav-list .nav-list-item .nav-list-expander { color: #5c5962; }
 .nav-list .nav-list-item.active > .nav-list-expander svg { transform: rotate(-90deg); }
 .nav-list .nav-list-item.active > .nav-list { display: block; }
+
+.nav-category { padding-top: 0.5rem; padding-right: 1rem; padding-bottom: 0.5rem; padding-left: 1rem; font-weight: 600; text-align: end; text-transform: uppercase; border-bottom: 1px solid #eeebee; font-size: 11px !important; }
+@media (min-width: 31.25rem) { .nav-category { font-size: 12px !important; } }
+@media (min-width: 50rem) { .nav-category { padding-right: 2rem; padding-left: 2rem; margin-top: 1rem; text-align: start; }
+  .nav-category:first-child { margin-top: 0; } }
 
 .aux-nav { height: 100%; overflow-x: auto; font-size: 11px !important; }
 @media (min-width: 31.25rem) { .aux-nav { font-size: 12px !important; } }
