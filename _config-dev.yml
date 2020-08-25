@@ -3,7 +3,11 @@ title: The Hitchhiker's Guide to Compression
 description: A collection of resources and posts to help people understand compression algorithms.
 footer-links:
   github: go-compression/go-compression.github.io
-url: https://go-compression.github.io/
+# url: https://go-compression.github.io/
+
+url: "" # blank in development
+
+development: true # optional, you can use in liquid tag conditionals
 
 exclude: [node_modules, gulpfile.js]
 
