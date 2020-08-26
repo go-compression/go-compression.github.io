@@ -1,5 +1,6 @@
 ---
 title: LZSS
+layout: default
 parent: Lempel-Ziv
 grand_parent: Overview of Algorithms
 nav_order: 1
@@ -417,6 +418,59 @@ The function definition is pretty simple, we can just move our `text` and `max_s
 
 The finished code can be found in [lzss.py](https://github.com/go-compression/examples/blob/master/lz/lzss/lzss_encoder.py) in the examples GitHub repo.
 
+Lastly, there's a few bug in our program that we encounter with larger files. If we have some text, for example:
+
+```
+ISAM YAM SAM
+```
+
+When the encoder gets to the space right before the "SAM", it will look for a space in the search buffer which it finds. Then it will search for a space and an "S" (" S") which it doesn't find, so it continues and starts looking for an "A". The issue here is that it skips looking for an "S" and continues to encode the "AM" not the "SAM".
+
+In some rare circumstances the code may generate a reference that with a length that is larger than its offset which will result in an error.
+
+To fix this, we'll need to rewrite the logic in our encoder a little bit.
+
+```python
+for char in text_bytes:
+	index = elements_in_array(check_characters, search_buffer) # The index where the characters appears in our search buffer
+
+	if elements_in_array(check_characters + [char], search_buffer) == -1 or i == len(text_bytes) - 1:
+		if i == len(text_bytes) - 1 and elements_in_array(check_characters + [char], search_buffer) != -1:
+			# Only if it's the last character then add the next character to the text the token is representing
+			check_characters.append(char)
+
+		if len(check_characters) > 1:
+			index = elements_in_array(check_characters, search_buffer)
+			offset = i - index - len(check_characters) # Calculate the relative offset
+			length = len(check_characters) # Set the length of the token (how many character it represents)
+
+			token = f"<{offset},{length}>" # Build our token
+
+			if len(token) > length:
+				# Length of token is greater than the length it represents, so output the characters
+				output.extend(check_characters) # Output the characters
+			else:
+				output.extend(token.encode(encoding)) # Output our token
+
+			search_buffer.extend(check_characters) # Add the characters to our search buffer
+		else:
+			output.extend(check_characters) # Output the character
+			search_buffer.extend(check_characters) # Add the characters to our search buffer
+
+		check_characters = []
+
+	check_characters.append(char)
+
+	if len(search_buffer) > max_sliding_window_size: # Check to see if it exceeds the max_sliding_window_size
+		search_buffer = search_buffer[1:] # Remove the first element from the search_buffer
+
+	i += 1
+```
+
+To fix the first issue we add the current `char` to `check_characters` only at the end and check to see if `check_characters + [char]` is found. If not we know that `check_characters` is found so we can continue as normal, and `check_characters` gets cleared before `char` is added onto `check_characters` for the next iteration. We also implement a check on the last iteration to add the current `char` to `check_characters` as otherwise our logic wouldn't be run on the last character and a token wouldn't be created.
+
+To resolve the other problem we simply have to move the `search_buffer.append(char)` calls up into our logic and change them to `search_buffer.extend(check_characters)`. This way we only update our search buffer when we've already tried to find a token.
+
 ## Implementing a Decoder
 
 What's the use of encoding something some text if we can't decode it? For that we'll need to build ourselves a decoder.
@@ -451,3 +505,153 @@ The next step is to start doing some actual decoding. The goal of our decoder is
 > Notice the various components of a token that need to be identified and extracted so we can find the text they represent
 
 Let's make a small change so we can identify the start and end of a token.
+
+```python
+for char in text_bytes:
+        if char == "<".encode(encoding)[0]:
+            print("Found opening of a token")
+        elif char == ">".encode(encoding)[0]:
+            print("Found closing of a token")
+
+        output.append(char) # Add the character to our output
+
+    return bytes(output)
+```
+
+Because we're going character-by-character we can simply check to see if the character is a token opening character or closing character to tell if we're inside a token. Let's add some more code to track the numbers between the comma, our seperator.
+
+```python
+inside_token = False
+scanning_offset = True
+
+length = [] # Length number encoded as bytes
+offset = [] # Offset number encoded as bytes
+
+for char in text_bytes:
+	if char == "<".encode(encoding)[0]:
+		inside_token = True # We're now inside a token
+		scanning_offset = True # We're now looking for the length number
+	elif char == ",".encode(encoding)[0]:
+		scanning_offset = False
+	elif char == ">".encode(encoding)[0] and inside_token:
+		inside_token = False # We're no longer inside a token
+
+		# Convert length and offsets to an integer
+		length_num = int(bytes(length).decode(encoding))
+		offset_num = int(bytes(offset).decode(encoding))
+
+		print(f"Found token with length: {length_num}, offset: {offset_num}")
+
+		# Reset length and offset
+		length, offset = [], []
+	elif inside_token:
+		if scanning_offset:
+			offset.append(char)
+		else:
+			length.append(char)
+
+	output.append(char) # Add the character to our output
+```
+
+Output:
+
+```
+Found token with length: 34, offset: 35
+supercalifragilisticexpialidocious <35,34>
+```
+
+We now have a bunch of `if` statements that give our loop some more control flow. Let's go over the changes.
+
+First off we have four new variables outside of the loop:
+
+- `inside_token` - Tracks whether or not we're inside a token
+- `scanning_offset` - Tracks whether we're currently scanning for the offset number or the length number (1st or 2nd number in the token)
+- `length` - Used to store the bytes (or characters) that represent the token's length
+- `offset`- Used to store the bytes (or characters) that represent the token's offset
+
+Inside of the loop, we check if the character is a `<`, `,`, or a `>` and modify the variables accordingly to track where we are. If the character isn't any of those **and we're inside a token** then we want to add the character to either the offset or length because that means the character is an offset or length.
+
+Lastly, if the character is a `>`, that means we're exiting the token, so let's convert our `length` and `offset` into a Python `int`. We have to do this because they're currently represented as a list of bytes, so we need to convert those bytes into a Python string and convert that string into an `int`. Then we finally print that we've found a token.
+
+### Translating Tokens
+
+Now we have one last step left: translating tokens into the text they represent. Thanks to [Python list slicing](https://stackoverflow.com/questions/509211/understanding-slice-notation) this is quite simple.
+
+```python
+for char in text_bytes:
+	if char == "<".encode(encoding)[0]:
+		inside_token = True # We're now inside a token
+		scanning_offset = True # We're now looking for the length number
+		token_start = i
+	elif char == ",".encode(encoding)[0]:
+		scanning_offset = False
+	elif char == ">".encode(encoding)[0] and inside_token:
+		inside_token = False # We're no longer inside a token
+
+		# Convert length and offsets to an integer
+		length_num = int(bytes(length).decode(encoding))
+		offset_num = int(bytes(offset).decode(encoding))
+
+		# Get text that the token represents
+		referenced_text = output[-offset_num:][:length_num]
+
+		output.extend(referenced_text) # referenced_text is a list of bytes so we use extend to add each one to output
+
+		# Reset length and offset
+		length, offset = [], []
+	elif inside_token:
+		if scanning_offset:
+			offset.append(char)
+		else:
+			length.append(char)
+	else:
+		output.append(char) # Add the character to our output
+
+
+return bytes(output)
+```
+
+Output:
+
+```
+supercalifragilisticexpialidocious supercalifragilisticexpialidocious
+```
+
+In order to calculate the piece of text that a token is referencing we can simply use our offset and length to find the text from the current output. We use a negative slice to grab all the characters backwards from `offset_num` and grab up to `length_num` elements. This results in a `referenced_text` that represents the token references. Finally we add the `referenced_text` to our output and we're finished.
+
+Lastly, we'll only want to add a character to the output **if we're not in a token** so we add an `else` to the end of our logic which only runs if we're not in a token.
+
+And that's it! We now have a LZSS decoder, and by extension, an LZ77 decoder as decoders don't need to worry about outputting a token only if it's greater than the referenced text.
+
+## Implementation Conclusion
+
+We've gone through step-by-step building an encoder and decoder and learned the purpose of each component. Let's do some basic benchmarks to see how well it works.
+
+```python
+if __name__ == "__main__":
+    encoded = encode(text).decode(encoding)
+    decoded = decode(encoded).decode(encoding)
+
+    print(f"Original: {len(text)}, Encoded: {len(encoded)}, Decoded: {len(decoded)}")
+    print(f"Lossless: {text == decoded}")
+    print(f"Compressed size: {(len(encoded)/len(text)) * 100}%")
+```
+
+Using the `text` as [Green Eggs and Ham by Doctor Seuss](https://www.site.uottawa.ca/~lucia/courses/2131-02/A2/trythemsource.txt), we see the output:
+
+```
+Original: 3463 bytes, Encoded: 1912 bytes, Decoded: 3463 bytes
+Lossless: True
+Compressed size: 55.21224371931851%
+```
+
+LZSS just reduced the file size by 45%, not bad!
+
+One thing to keep in mind is that when we refer to a "character", we really mean a "byte". Our loop runs byte-by-byte, not character-by-character. This distinction is minor but significant. In the world of encodings, not every character is a single byte. For example in `utf-8`, any english letter or symbol is a single byte, but more complicated characters like arabic, mandarin, or emoji characters require multiple bytes despite being a single "character".
+
+- 4 bytes - 😀
+- 1 byte - H
+- 3 bytes - 话
+- 6 bytes - يَّ
+
+If you're interested in learning more about how bytes work, check out the Wikipedia articles on [Bytes](https://en.wikipedia.org/wiki/Byte) and [Unicode](https://en.wikipedia.org/wiki/Unicode).
