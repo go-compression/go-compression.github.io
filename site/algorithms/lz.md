@@ -1,5 +1,6 @@
 ---
 title: Lempel-Ziv
+layout: default
 parent: Overview of Algorithms
 nav_order: 1
 has_children: true
@@ -23,11 +24,12 @@ As you can see, the algorithm simply takes an input string, in this case, "Hello
 The `<16,6>` token is quite simple to understand too, it consists of two numbers and some syntactic sugar to make it easy to understand. The first number corresponds to how many characters it shoud look **backwards**, and the next number tells it how many characters to **go forwards and copy**. This means that in our example, `<16,6>` expands into "Hello " as it goes 16 characters backwards, and copies the next 6 characters.
 
 This is the essential idea behind the algorithm, however it should be noted that there are many variations of this algorithm with different names. For example, in some implementations, the first number means go **forwards from the beginning** instead of **backwards from the current position**. Small (and big) differences like these are the reason for so many variations:
- - [LZSS]({% link algorithms/lzss.md %}) - Lempel-Ziv-Storer-Szymanski
- - LZW - Lempel-Ziv-Welch
- - LZMA - Lempel–Ziv–Markov chain algorithm
- - LZ77 - Lempel-Ziv 77
- - LZ78 - Lempel-Ziv 78
+
+- [LZSS]({% link algorithms/lzss.md %}) - Lempel-Ziv-Storer-Szymanski
+- LZW - Lempel-Ziv-Welch
+- LZMA - Lempel–Ziv–Markov chain algorithm
+- LZ77 - Lempel-Ziv 77
+- LZ78 - Lempel-Ziv 78
 
 It's also important to understand the difference between LZ77 and LZ78, the first, and most common, Lempel-Ziv algorithms. LZ77 works very similarly to the example above, using a token to represent an offset and length, while LZ78 uses a more complicated dictionary approach. For a more in-depth explanation, make sure to check out [this wonderful article](https://towardsdatascience.com/how-data-compression-works-exploring-lz78-e97e539138) explaining LZ78.
 

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/go-compression/go-compression.github.io#readme",
   "devDependencies": {
+    "fabric": "^4.1.0",
     "browser-sync": "^2.26.12",
     "gulp": "^4.0.2",
     "gulp-shell": "^0.8.0",

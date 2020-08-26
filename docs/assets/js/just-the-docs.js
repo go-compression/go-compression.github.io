@@ -59,7 +59,7 @@ function initSearch() {
     if (request.status >= 200 && request.status < 400) {
       var docs = JSON.parse(request.responseText);
       
-      lunr.tokenizer.separator = /[\s\-/]+/
+      lunr.tokenizer.separator = /[\s/]+/
 
       var index = lunr(function(){
         this.ref('id');
