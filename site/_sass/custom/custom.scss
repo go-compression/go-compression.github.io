@@ -5,7 +5,25 @@ $sidebar_width: 364px;
   max-height: 90px;
 }
 
-@media (min-width: 66.5rem) {
+@media (max-width: 90rem) and (min-width: 50rem) {
+  .site-nav,
+  .site-header,
+  .site-footer {
+    width: $sidebar_width;
+  }
+
+  $sidebar_width_offset: calc((100%) / 2 - #{$sidebar_width});
+
+  .side-bar {
+    width: $sidebar_width;
+  }
+
+  .main {
+    margin-left: $sidebar_width;
+  }
+}
+
+@media (min-width: 90rem) {
   .site-nav,
   .site-header,
   .site-footer {

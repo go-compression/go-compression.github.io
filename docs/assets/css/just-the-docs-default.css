@@ -1537,7 +1537,9 @@ pre.highlight code, figure.highlight code { padding: 0; border: 0; }
 
 .site-header { height: 90px; max-height: 90px; }
 
-@media (min-width: 66.5rem) { .site-nav, .site-header, .site-footer { width: 364px; } .side-bar { width: calc((100%) / 2 - 364px); } .main { margin-left: calc((100%) / 2 - 364px); } }
+@media (max-width: 90rem) and (min-width: 50rem) { .site-nav, .site-header, .site-footer { width: 364px; } .side-bar { width: 364px; } .main { margin-left: 364px; } }
+
+@media (min-width: 90rem) { .site-nav, .site-header, .site-footer { width: 364px; } .side-bar { width: calc((100%) / 2 - 364px); } .main { margin-left: calc((100%) / 2 - 364px); } }
 
 #canvas-container-jtd { border: 2px solid gray; border-radius: 4px; width: 100%; height: 600px; }
 
