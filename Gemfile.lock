@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/pmarsceill/just-the-docs.git
-  revision: 6ac67d22288600cdfa1662da837581a4ce4acdb3
-  branch: v0.3.2
-  specs:
-    just-the-docs (0.3.2)
-      jekyll (>= 3.8.5)
-      jekyll-seo-tag (~> 2.0)
-      rake (>= 12.3.1, < 13.1.0)
-
-GIT
   remote: https://github.com/jekyll/jekyll.git
   revision: 4299095d218e8ab7c5c7930eb2f0cbf5166ff888
   specs:
@@ -27,6 +17,16 @@ GIT
       rouge (~> 3.0)
       safe_yaml (~> 1.0)
       terminal-table (~> 1.8)
+
+GIT
+  remote: https://github.com/pmarsceill/just-the-docs.git
+  revision: 6ac67d22288600cdfa1662da837581a4ce4acdb3
+  branch: v0.3.2
+  specs:
+    just-the-docs (0.3.2)
+      jekyll (>= 3.8.5)
+      jekyll-seo-tag (~> 2.0)
+      rake (>= 12.3.1, < 13.1.0)
 
 GEM
   remote: https://rubygems.org/
