@@ -1,0 +1,15 @@
+---
+layout: lzss/fullscreen
+title: Fullscreen LZ77/LZSS
+parent: LZ77/LZSS
+grand_parent: Interactive Algorithms
+nav_order: 2
+---
+
+# Fullscreen LZ77/LZSS
+
+The fullscreen version:
+
+- Does not resize content to fit your canvas
+- Allows you to pan and zoom
+- Has a larger canvas window

@@ -23,6 +23,8 @@ readme_index:
 # remote_theme: pmarsceill/just-the-docs
 theme: "just-the-docs"
 
+footer_content: 'If you see something off, please consider <a href="https://go-compression.github.io/contributing/">contributing</a>.'
+
 # Aux links for the upper right navigation
 aux_links:
   "View on GitHub":

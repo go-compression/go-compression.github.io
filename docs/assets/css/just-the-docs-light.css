@@ -1539,9 +1539,21 @@ pre.highlight code, figure.highlight code { padding: 0; border: 0; }
 
 @media (max-width: 90rem) and (min-width: 50rem) { .site-nav, .site-header, .site-footer { width: 364px; } .side-bar { width: 364px; } .main { margin-left: 364px; } }
 
-@media (min-width: 90rem) { .site-nav, .site-header, .site-footer { width: 364px; } .side-bar { width: calc((100%) / 2 - 364px); } .main { margin-left: calc((100%) / 2 - 364px); } }
+@media (min-width: 90rem) { .site-nav, .site-header, .site-footer { width: 364px; } .side-bar { width: calc((100%) / 2 - 364px); } .main { margin-left: calc((100%) / 2 - 364px); } .side-left { width: 364px; } }
 
-#canvas-container-jtd { border: 2px solid gray; border-radius: 4px; width: 100%; height: 600px; }
+.main-fs { margin-left: 6px; margin-right: 6px; max-width: initial; height: calc(100% - 14rem); }
+
+.main-fs { padding-top: 2rem; }
+
+.main-fs { padding-top: 1rem; }
+
+@media (min-width: 50rem) and (max-width: 90rem) { .main-fs { margin-left: 384px; margin-right: 20px; width: calc(100% - 384px - 20px); max-width: initial; height: calc(100% - 14rem); } .main-fs { padding-top: 2rem; } }
+
+@media (min-width: 90rem) { .main-fs { margin-left: 444px; margin-right: 80px; width: calc(100% - 444px - 80px); max-width: initial; height: calc(100% - 14rem); } .main-fs { padding-top: 4rem; } }
+
+#canvas-container-jtd { margin-top: 4px; border: 2px solid gray; border-radius: 4px; width: 100%; height: 600px; }
+
+.container-jtd-fs { border: 2px solid gray; border-radius: 4px; width: 100%; height: calc(100% - 24px); }
 
 .pure-button { border-radius: 4px !important; }
 
