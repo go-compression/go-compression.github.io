@@ -39,13 +39,85 @@ $sidebar_width: 364px;
   .main {
     margin-left: $sidebar_width_offset;
   }
+
+  .side-left {
+    width: $sidebar_width;
+  }
 }
 
+$margin: 6px;
+$margin-left: $margin;
+$margin-right: $margin;
+
+.main-fs {
+  margin-left: $margin-left;
+  margin-right: $margin-right;
+  max-width: initial;
+  height: calc(100% - 14rem);
+}
+
+.main-fs {
+  padding-top: 2rem;
+}
+
+.main-fs {
+  padding-top: 1rem;
+}
+
+@media (min-width: 50rem) and (max-width: 90rem) {
+  $margin: 20px;
+  $margin-left: $sidebar_width + $margin;
+  $margin-right: $margin;
+
+  .main-fs {
+    margin-left: $margin-left;
+    margin-right: $margin-right;
+    width: calc(100% - #{$margin-left} - #{$margin-right});
+    max-width: initial;
+    height: calc(100% - 14rem);
+  }
+
+  .main-fs {
+    padding-top: 2rem;
+  }
+}
+
+@media (min-width: 90rem) {
+  $margin: 80px;
+  $margin-left: $sidebar_width + $margin;
+  $margin-right: $margin;
+
+  .main-fs {
+    margin-left: $margin-left;
+    margin-right: $margin-right;
+    width: calc(100% - #{$margin-left} - #{$margin-right});
+    max-width: initial;
+    height: calc(100% - 14rem);
+  }
+
+  .main-fs {
+    padding-top: 4rem;
+  }
+}
+
+// body,
+// html {
+//   height: 100%;
+// }
+
 #canvas-container-jtd {
+  margin-top: 4px;
   border: 2px solid gray;
   border-radius: 4px;
   width: 100%;
   height: 600px;
+}
+
+.container-jtd-fs {
+  border: 2px solid gray;
+  border-radius: 4px;
+  width: 100%;
+  height: calc(100% - 24px);
 }
 
 .pure-button {

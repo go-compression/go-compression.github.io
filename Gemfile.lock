@@ -19,9 +19,8 @@ GIT
       terminal-table (~> 1.8)
 
 GIT
-  remote: https://github.com/pmarsceill/just-the-docs.git
-  revision: 6ac67d22288600cdfa1662da837581a4ce4acdb3
-  branch: v0.3.2
+  remote: https://github.com/mrfleap/just-the-docs.git
+  revision: cdfad69c5b0ae25bc3c18de5392c9beba339a342
   specs:
     just-the-docs (0.3.2)
       jekyll (>= 3.8.5)

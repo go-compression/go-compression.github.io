@@ -11,6 +11,7 @@ var colorStep = "#03fcd3";
 var colorCurrent = "#fcba03";
 
 var showMouse = false;
+var fullscreen = false;
 
 var delay = 500;
 var autostep = false;
@@ -60,7 +61,9 @@ async function stepThrough() {
         outputToken = false;
     }
 
-    resizeText();
+    if (!fullscreen) {
+        resizeText();
+    }
 
     stepCount++;
 
@@ -206,14 +209,23 @@ function process() {
     text = new fabric.Text(input, {
         fontFamily: "Roboto Mono",
         fontSize: 72,
+        selectable: false,
+        originX: "left",
+        originY: "top"
     });
 
     text.reposition = function () {
         this.center();
         this.set("top", 20);
+        if (this.width > canvas.width && fullscreen) {
+            searchBufferText.left = this.left;
+            searchBufferTitle.left = this.left;
+            outputTitle.left = this.left;
+            outputText.left = this.left;
+            scanningTitle.left = this.left;
+            scanningText.left = this.left;
+        }
     }
-
-    text.reposition();
 
     canvas.add(text);
 
@@ -222,12 +234,14 @@ function process() {
         fontSize: 36,
         left: 0,
         top: canvas.height * (1 / 4),
+        selectable: false,
     });
     searchBufferText = new fabric.Text("", {
         fontFamily: "Roboto Mono",
         fontSize: 36,
         left: 0,
         top: canvas.height * (1 / 4) + 36,
+        selectable: false,
     });
 
     searchBufferText.reposition = function () {
@@ -245,12 +259,14 @@ function process() {
         fontSize: 36,
         left: 0,
         top: canvas.height * (2 / 4),
+        selectable: false,
     });
     outputText = new fabric.Text("", {
         fontFamily: "Roboto Mono",
         fontSize: 36,
         left: 0,
         top: canvas.height * (2 / 4) + 36,
+        selectable: false,
     });
 
     outputText.reposition = function () {
@@ -267,12 +283,14 @@ function process() {
         fontSize: 36,
         left: 0,
         top: canvas.height * (3 / 4),
+        selectable: false,
     });
     scanningText = new fabric.Text("", {
         fontFamily: "Roboto Mono",
         fontSize: 36,
         left: 0,
         top: canvas.height * (3 / 4) + 36,
+        selectable: false,
     });
 
     scanningText.reposition = function () {
@@ -285,6 +303,9 @@ function process() {
     canvas.add(scanningText);
 
     // text.set("selecteable", false)
+
+    texts = [searchBufferTitle, scanningTitle, outputTitle, searchBufferText, scanningText, outputText, text]
+    resizeTexts = [searchBufferText, scanningText, outputText, text]
 
     if (showMouse) {
         var coords = new fabric.Text(" , ", {
@@ -305,20 +326,32 @@ function process() {
         });
     }
 
-    resizeText();
+    if (!fullscreen) {
+        resizeText();
+    }
+
+    text.reposition();
+    if (text.width > canvas.width && fullscreen) {
+        canvas.zoomToPoint(new fabric.Point(text.left + (text.width / 2), text.top + (text.height / 2)), (canvas.width / (text.width)));
+    }
+    canvas.renderAll();
 }
 
-function resizeText() {
-    var texts = [searchBufferText, scanningText, outputText, text]
+var texts = []
+var resizeTexts = [];
 
-    texts.forEach(function (textObj) {
+function resizeText() {
+    resizeTexts.forEach(function (textObj) {
         while (textObj.width > canvas.width) {
             textObj.fontSize--;
             canvas.renderAll();
             // console.log(textObj.fontSize)
         }
-        textObj.reposition();
+        if (textObj.reposition) {
+            textObj.reposition();
+        }
     });
+    canvas.renderAll();
 }
 
 function getCharacterOfText(text, characterIndex) {
@@ -345,7 +378,19 @@ window.addEventListener("load", function () {
     }
 
     // create a wrapper around native canvas element (with id="canvas")
-    canvas = new fabric.Canvas("canvas");
+    canvas = new fabric.Canvas("canvas", {
+        selection: false,
+        evented: false,
+        enableRetinaScaling: true
+    });
+
+    if (fullscreen) {
+        canvas.defaultCursor = "all-scroll";
+        canvas.hoverCursor = "all-scroll";
+    } else {
+        canvas.defaultCursor = "default";
+        canvas.hoverCursor = "default";
+    }
 
     canvas.setDimensions({
         width: document.getElementById("canvas-container-jtd").offsetWidth,
@@ -386,6 +431,50 @@ window.addEventListener("load", function () {
     document.getElementById("input-text").addEventListener("change", function () {
         process();
     })
+
+    if (fullscreen) {
+        canvas.on('mouse:down', function (opt) {
+            var evt = opt.e;
+            this.isDragging = true;
+            this.selection = false;
+            this.lastPosX = evt.clientX;
+            this.lastPosY = evt.clientY;
+        });
+        canvas.on('mouse:move', function (opt) {
+            if (this.isDragging) {
+                var e = opt.e;
+                var vpt = this.viewportTransform;
+                vpt[4] += e.clientX - this.lastPosX;
+                vpt[5] += e.clientY - this.lastPosY;
+                this.requestRenderAll();
+                this.lastPosX = e.clientX;
+                this.lastPosY = e.clientY;
+            }
+        });
+        canvas.on('mouse:up', function (opt) {
+            // on mouse up we want to recalculate new interaction
+            // for all objects, so we call setViewportTransform
+            this.setViewportTransform(this.viewportTransform);
+            this.isDragging = false;
+            this.selection = true;
+        });
+        canvas.on('mouse:wheel', function (opt) {
+            var delta = opt.e.deltaY;
+            var zoom = canvas.getZoom();
+            zoom *= 0.990 ** delta;
+            if (zoom > 20) zoom = 20;
+            if (zoom < 0.01) zoom = 0.01;
+            canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+            opt.e.preventDefault();
+            opt.e.stopPropagation();
+            texts.forEach(function (textObj) {
+                console.log(textObj);
+                canvas.remove(textObj);
+                canvas.add(textObj);
+            });
+        })
+    }
+    process();
 });
 
 stepCountBtn.addEventListener("click", function () {
