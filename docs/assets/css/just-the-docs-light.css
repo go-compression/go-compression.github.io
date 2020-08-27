@@ -1545,4 +1545,10 @@ pre.highlight code, figure.highlight code { padding: 0; border: 0; }
 
 .pure-button { border-radius: 4px !important; }
 
+.pure-label { padding-left: 4px !important; }
+
+.pure-checkbox { display: inline !important; margin-right: 4px !important; }
+
+.slider-container { padding-left: 16px; padding-right: 16px; }
+
 /*# sourceMappingURL=just-the-docs-light.css.map */
