@@ -25,6 +25,7 @@ async function stepThrough() {
 
     scan(character);
 
+    await sleep(delay);
     var r = await lookForScanningChars();
     found = r[0]
     if (r[1] !== -1) {
