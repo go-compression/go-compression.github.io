@@ -120,6 +120,10 @@ $margin-right: $margin;
   height: calc(100% - 24px);
 }
 
+#canvas-container-jtd:not(.container-jtd-fs) {
+  pointer-events: none;
+}
+
 .pure-button {
   border-radius: 4px !important;
 }
