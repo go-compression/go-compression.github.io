@@ -6,54 +6,41 @@ var outputToken = false;
 var index = 0;
 var scanningChars = "";
 
+var colorDefault = "#320b86";
+var colorStep = "#03fcd3";
+var colorCurrent = "#fcba03";
+
 var showMouse = false;
+
+var delay = 500;
+var autostep = false;
+var autostepElement;
 
 async function stepThrough() {
     stepCountBtn.disabled = true;
-    highlight(text, stepCount);
+    highlight(text, stepCount, colorStep);
 
     character = text.text[stepCount];
 
     scan(character);
 
-    if (found) {
-        var r = await lookForScanningChars();
-        found = r[0]
-        if (r[1] !== -1) {
-            index = r[1];
-        }
-        if (!found) {
-            var offset = searchBufferText.text.length - index;
-            var length = scanningChars.length - 1;
-            output("<" + offset + "," + length + ">")
-            outputToken = true;
-        } else if (stepCount == text.text.length - 1) {
-            var offset = searchBufferText.text.length - index;
-            var length = scanningChars.length;
-            output("<" + offset + "," + length + ">")
-            outputToken = true;
-        }
-    } else {
-        for (var i = searchBufferText.text.length - 1; i >= 0; i--) {
-            highlight(searchBufferText, i);
-            canvas.renderAll();
-            await sleep(500);
-
-            var searchChar = searchBufferText.text[i];
-            if (searchChar === character) {
-                index = i
-                found = true;
-                if (stepCount == text.text.length - 1) {
-                    var offset = searchBufferText.text.length - i;
-                    var length = 1
-                    output("<" + offset + "," + length + ">")
-                    outputToken = true;
-                } else {
-                    break;
-                }
-                // alert("Found")
-            }
-        }
+    var r = await lookForScanningChars();
+    found = r[0]
+    if (r[1] !== -1) {
+        index = r[1];
+    }
+    if (!found && scanningChars.length > 1) {
+        var offset = searchBufferText.text.length - index;
+        var length = scanningChars.length - 1;
+        output("<" + offset + "," + length + ">")
+        outputToken = true;
+        index = 0;
+    } else if (stepCount == text.text.length - 1) {
+        var offset = searchBufferText.text.length - index;
+        var length = scanningChars.length;
+        output("<" + offset + "," + length + ">")
+        outputToken = true;
+        index = 0;
     }
 
     clearHightlights(searchBufferText);
@@ -73,28 +60,36 @@ async function stepThrough() {
         outputToken = false;
     }
 
+    resizeText();
+
     stepCount++;
 
     if (stepCount >= text.text.length) {
-        stepCountBtn.classList.add("d-none");
+        stepCountBtn.disabled = true;
+    } else {
+        stepCountBtn.disabled = false;
     }
-    stepCountBtn.disabled = false;
+
+    if (autostep && !stepCountBtn.disabled) {
+        stepThrough();
+    }
 }
 
 async function lookForScanningChars() {
     var offset = 0;
 
     for (var i = index; i < searchBufferText.text.length; i++) {
-        highlightRange(searchBufferText, i - offset, i + scanningChars.length - offset);
-        canvas.renderAll();
-        await sleep(500);
-
-        var searchChar = searchBufferText.text[i];
-
         if (scanningChars.length <= offset) {
             // Found all scanning characters
             return [true, i - scanningChars.length]
         }
+
+        highlightRange(searchBufferText, i - offset, i + scanningChars.length - offset, scanningChars, colorDefault);
+        highlightNoClear(searchBufferText, i, colorCurrent);
+        canvas.renderAll();
+        await sleep(delay);
+
+        var searchChar = searchBufferText.text[i];
 
         if (scanningChars[offset] == searchChar) {
             offset++;
@@ -119,6 +114,7 @@ var scanningText;
 
 function output(text) {
     outputText.text += text;
+    document.getElementById("output-text").innerHTML += text;
 }
 
 function addToSearchBuffer(text) {
@@ -144,34 +140,62 @@ function clearHightlights(textObj) {
         }
     }
     textObj.highlights = [];
+
+    if (textObj.chars) {
+        for (var i = 0; i < textObj.chars.length; i++) {
+            canvas.remove(textObj.chars[i])
+        }
+    }
+    textObj.chars = [];
 }
 
-function highlightRange(textObj, start, end) {
+function highlightRange(textObj, start, end, chars, color) {
     clearHightlights(textObj);
 
+    highlightRangeNoClear(textObj, start, end, chars, color)
+}
+
+function highlightRangeNoClear(textObj, start, end, chars, color) {
     for (var i = start; i < end; i++) {
         var positions = getCharacterOfText(textObj, i);
         var rect = new fabric.Rect({
             width: textObj.fontSize / 2,
             height: 10,
-            fill: "#320b86",
+            fill: color,
             left: positions[0],
             top: positions[1],
         });
         canvas.add(rect);
-        canvas.renderAll();
         textObj.highlights.push(rect);
+
+        if (chars.length > (i - start)) {
+            var char = new fabric.Text(chars[i - start], {
+                fontFamily: "Roboto Mono",
+                fontSize: textObj.fontSize / 2,
+                left: positions[0],
+                top: positions[1] + textObj.fontSize / 2,
+            })
+            char.left += char.width / 2 - 3;
+            char.setCoords()
+            canvas.add(char)
+            textObj.chars.push(char)
+            canvas.renderAll();
+        }
     }
 }
 
-function highlight(textObj, index) {
+function highlightNoClear(textObj, index, color) {
     var upper = index + 1;
-    return highlightRange(textObj, index, upper);
+    return highlightRangeNoClear(textObj, index, upper, "", color);
+}
+
+function highlight(textObj, index, color) {
+    var upper = index + 1;
+    return highlightRange(textObj, index, upper, "", color);
 }
 
 function process() {
     stepCount = 0;
-    stepCountBtn.classList.remove("d-none");
     stepCountBtn.disabled = false;
     canvas.clear();
     found = false;
@@ -183,6 +207,13 @@ function process() {
         fontFamily: "Roboto Mono",
         fontSize: 72,
     });
+
+    text.reposition = function () {
+        this.center();
+        this.set("top", 20);
+    }
+
+    text.reposition();
 
     canvas.add(text);
 
@@ -198,6 +229,12 @@ function process() {
         left: 0,
         top: canvas.height * (1 / 4) + 36,
     });
+
+    searchBufferText.reposition = function () {
+        this.left = 0;
+        this.top = canvas.height * (1 / 4) + 36;
+        this.setCoords();
+    }
 
     canvas.add(searchBufferText);
     canvas.add(searchBufferTitle);
@@ -216,6 +253,12 @@ function process() {
         top: canvas.height * (2 / 4) + 36,
     });
 
+    outputText.reposition = function () {
+        this.left = 0;
+        this.top = canvas.height * (2 / 4) + 36;
+        this.setCoords();
+    }
+
     canvas.add(outputTitle);
     canvas.add(outputText);
 
@@ -232,12 +275,16 @@ function process() {
         top: canvas.height * (3 / 4) + 36,
     });
 
+    scanningText.reposition = function () {
+        this.left = 0;
+        this.top = canvas.height * (3 / 4) + 36;
+        this.setCoords();
+    }
+
     canvas.add(scanningTitle);
     canvas.add(scanningText);
 
     // text.set("selecteable", false)
-    text.center();
-    text.set("top", 20);
 
     if (showMouse) {
         var coords = new fabric.Text(" , ", {
@@ -257,6 +304,21 @@ function process() {
             canvas.renderAll();
         });
     }
+
+    resizeText();
+}
+
+function resizeText() {
+    var texts = [searchBufferText, scanningText, outputText, text]
+
+    texts.forEach(function (textObj) {
+        while (textObj.width > canvas.width) {
+            textObj.fontSize--;
+            canvas.renderAll();
+            // console.log(textObj.fontSize)
+        }
+        textObj.reposition();
+    });
 }
 
 function getCharacterOfText(text, characterIndex) {
@@ -289,6 +351,41 @@ window.addEventListener("load", function () {
         width: document.getElementById("canvas-container-jtd").offsetWidth,
         height: document.getElementById("canvas-container-jtd").offsetHeight,
     });
+
+    var slider = document.getElementById('speed-slider');
+
+    noUiSlider.create(slider, {
+        start: [500],
+        range: {
+            'min': [0],
+            'max': [5000]
+        },
+        step: 250,
+        connect: true,
+    });
+
+
+
+    var sliderValueElement = document.getElementById('slider-range-value');
+
+    slider.noUiSlider.on('update', function (values, handle) {
+        delay = values[handle];
+        sliderValueElement.innerHTML = values[handle];
+    });
+
+    autostepElement = document.getElementById("autostep");
+    autostepElement.addEventListener('change', (event) => {
+        if (event.target.checked) {
+            autostep = true;
+            stepThrough();
+        } else {
+            autoste = false;
+        }
+    });
+
+    document.getElementById("input-text").addEventListener("change", function () {
+        process();
+    })
 });
 
 stepCountBtn.addEventListener("click", function () {

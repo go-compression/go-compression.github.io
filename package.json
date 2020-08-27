@@ -22,5 +22,8 @@
     "gulp": "^4.0.2",
     "gulp-shell": "^0.8.0",
     "lodash": "^4.17.20"
+  },
+  "dependencies": {
+    "nouislider": "^14.6.1"
   }
 }
