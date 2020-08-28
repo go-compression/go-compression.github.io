@@ -1,4 +1,10 @@
-
+---
+title:  Huffman
+layout: default
+parent: Overview of Algorithms
+nav_order: 1
+has_children: false
+---
 # Huffman
 
   
