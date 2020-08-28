@@ -112,7 +112,7 @@ L
 O
 ```
 
-Although the code is functionally pretty simple, there's a few important things going on here. You can see that looping character-by-character isn't as simple as `for char in text`, first we have to encode it and then loop over the encoding. This is because it converts our string into an array of [bytes]({% link reference.md %}), represented as a Python object called `bytes`. When we print the character out, we have to convert it from a byte (represented as a Python `int`) back to a string so we can see it.
+Although the code is functionally pretty simple, there's a few important things going on here. You can see that looping character-by-character isn't as simple as `for char in text`, first we have to encode it and then loop over the encoding. This is because it converts our string into an array of [bytes]({% link reference/reference.md %}), represented as a Python object called `bytes`. When we print the character out, we have to convert it from a byte (represented as a Python `int`) back to a string so we can see it.
 
 The reason we do this is because a byte is really just a number from 0-255 as it is represented in your computer as 8 1's and 0's, called [binary](https://en.wikipedia.org/wiki/Binary_code). If you don't already have a basic understanding of how computers store our language, you should get acquainted with it on our [getting started]({% link getting_started.md %}) page.
 
