@@ -30,11 +30,11 @@ Although huffman encoding may seem confusing from an outside view, we can break 
 
   
 
-- [Frequency Counting](#Frequency&nbsp;Counting)
+- [Frequency Counting](#Frequency-Counting)
 
-- [Tree Building](#Tree&nbsp;Building)
+- [Tree Building](#Tree-Building)
 
-- [Character Encoding](#Character&nbsp;Encoding)
+- [Character Encoding](#Character-Encoding)
 
 ## Frequency Counting
 
@@ -106,15 +106,15 @@ To understand more about the programatic implementation of tree building, click 
 Character encoding is the final step for most huffman encoders. Once a tree and frequency table has built, the final step is to encode the characters from the inital file and write the encoded bytes to a new file.
 
 This can be done in two ways.
-- [Tree Traversal](#Tree&nbsp;Traversal)
-- [Array Indexing](#Array&nbsp;Indexing)
+- [Tree Traversal](#Tree-Traversal)
+- [Array Indexing](#Array-Indexing)
 
 ### Tree Traversal
 Tree traversal is the first way of encoding the input of a huffman encoder. For each character, the tree is traversed recursively until a leaf with a matching character is found.
 
 This method can easily get complicated and very ineffecient as the tree has to be traversed multiple times. 
 
-For a simpler and quicker solution, we can use [Array Indexing](#Array&nbsp;Indexing)
+For a simpler and quicker solution, we can use [Array Indexing](#Array-Indexing)
 
 ### Array Indexing
 When compared to the previous tree traversal method, array indexing is much less complicated and significantly faster.  
