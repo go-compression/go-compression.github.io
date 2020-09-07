@@ -14,20 +14,19 @@ Since it's creation by David A. Huffman in 1952, Huffman coding has been regarde
 
 Although huffman encoding may seem confusing from an outside view, we can break it into three simple steps:
 
-- Frequency Counting
+- [Frequency Counting](#Frequency-Counting)
 
-- Tree Building
+- [Tree Building](#Tree-Building)
 
-- Character Encoding
+- [Character Encoding](#Character-Encoding)
 
-## Frequency Countinig
+## Frequency Counting
 
 Let's start out by going over the frequency counting step. Throughout all of the examples, I will be using the following sample input string:
 
 ```
-    I AM SAM. I AM SAM. SAM I AM.
-
-    THAT SAM-I-AM! THAT SAM-I-AM! I DO NOT LIKE THAT SAM-I-AM!
+I AM SAM. I AM SAM. SAM I AM.
+THAT SAM-I-AM! THAT SAM-I-AM! I DO NOT LIKE THAT SAM-I-AM!
 ```
 
 The huffman encoder starts out by going over the inputed text and outputing a table correlating each character to the number of time it appears in the text. For the sample input, the table would look this:
@@ -50,6 +49,7 @@ The huffman encoder starts out by going over the inputed text and outputing a ta
 | 8         | I         |
 | 12        | M         |
 | 15        | A         |
+| 17        |           |
 
 As displayed above, the table is sorted to ensure consistency in each step of the compression process.
 
@@ -64,3 +64,37 @@ That might be confusing, so lets break it down step by step.
 Huffman compression works by taking existing 8 bit characters and assigning them to a smaller number of bits. To optimize the compression, the characters with the highest frequency are given smaller bit values.
 
 A Huffman Tree helps us assign and visualize the new bit value assigned to existing characters. Simmilar to a binary tree, if we start at the root node, we can traverse the tree by using 1 to move to the right and 0 to move to the left. The position of a leaf node relative the root node is used to determine it's new bit value.
+
+A huffman tree for our example is depicted below:
+![Sample Huffman Tree](https://i.ibb.co/jyPPwnw/Screen-Shot-2020-08-31-at-10-34-00-AM.png)
+
+As shown in the image, Huffman trees can get very large and complicated very easily. To see a sample tree for any text go to url.
+
+To understand more about the programatic implementation of tree building, click here.
+
+## Character Encoding
+
+Character encoding is the final step for most huffman encoders. Once a tree and frequency table has built, the final step is to encode the characters from the inital file and write the encoded bytes to a new file.
+
+This can be done in two ways.
+
+- [Tree Traversal](#Tree-Traversal)
+- [Array Indexing](#Array-Indexing)
+
+### Tree Traversal
+
+Tree traversal is the first way of encoding the input of a huffman encoder. For each character, the tree is traversed recursively until a leaf with a matching character is found.
+
+This method can easily get complicated and very ineffecient as the tree has to be traversed multiple times.
+
+For a simpler and quicker solution, we can use [Array Indexing](#Array-Indexing)
+
+### Array Indexing
+
+When compared to the previous tree traversal method, array indexing is much less complicated and significantly faster.
+
+Before encoding the characters, the tree is traversed once and the values for each leaf are outputed in two corresponding arrays. The first array contains the value of each character, while the second contains its updated bit value.
+
+Once created, the arrays are treversed and each character in the input is replaced with its updated bit value.
+
+Once a new output text is generated, it is encoded as a byte array and written to the output file.
