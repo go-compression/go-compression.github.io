@@ -1,0 +1,31 @@
+---
+layout: base
+---
+
+{{ content }}
+
+{% include inputs/lzss.html %}
+
+{% include inputs/lzss_decode.html %}
+
+<script src="/assets/js/lzss_decode.js" type="text/javascript"></script>
+<script type="text/javascript">
+    (function () {
+        var decode = new LZDecoder({ ns: "decode-", fs: true })
+    })();
+</script>
+
+<div class="font_preload" style="opacity: 0">
+    <span style="font-family: Roboto Mono;"></span>
+</div>
+
+<div id="decode-canvas-container-jtd" class="canvas-container-jtd container-jtd-fs">
+    <canvas id="decode-canvas">
+
+    </canvas>
+</div>
+
+<div>
+    <p>Output:</p>
+    <p id="decode-output-text"></p>
+</div>

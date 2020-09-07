@@ -1,12 +1,12 @@
 ---
-layout: lzss/fullscreen
-title: Fullscreen LZ77/LZSS
+layout: lzss/fullscreen_decoder
+title: Fullscreen Decoder
 parent: LZ77/LZSS
 grand_parent: Interactive Algorithms
-nav_order: 2
+nav_order: 3
 ---
 
-# Fullscreen LZ77/LZSS
+# Fullscreen Decoder
 
 The fullscreen version:
 
