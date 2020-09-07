@@ -217,7 +217,6 @@ class LZDecoder extends LZ {
         this.canvas.renderAll();
 
         this.checkAutostep();
-        this.checkLzss();
     }
 
     load() {
