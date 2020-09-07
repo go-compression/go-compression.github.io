@@ -105,7 +105,7 @@ $margin-right: $margin;
 //   height: 100%;
 // }
 
-#canvas-container-jtd {
+.canvas-container-jtd {
   margin-top: 4px;
   border: 2px solid gray;
   border-radius: 4px;
@@ -117,10 +117,9 @@ $margin-right: $margin;
   border: 2px solid gray;
   border-radius: 4px;
   width: 100%;
-  height: calc(100% - 24px);
 }
 
-#canvas-container-jtd:not(.container-jtd-fs) {
+.canvas-container-jtd:not(.container-jtd-fs) {
   pointer-events: none;
 }
 
