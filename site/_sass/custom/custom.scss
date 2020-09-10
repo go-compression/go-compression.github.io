@@ -140,3 +140,8 @@ $margin-right: $margin;
   padding-left: 16px;
   padding-right: 16px;
 }
+
+th,
+td {
+  min-width: auto;
+}
