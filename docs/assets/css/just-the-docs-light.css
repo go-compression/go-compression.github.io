@@ -1565,4 +1565,6 @@ pre.highlight code, figure.highlight code { padding: 0; border: 0; }
 
 .slider-container { padding-left: 16px; padding-right: 16px; }
 
+th, td { min-width: auto; }
+
 /*# sourceMappingURL=just-the-docs-light.css.map */
