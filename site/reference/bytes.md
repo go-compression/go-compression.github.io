@@ -7,7 +7,7 @@ parent: Reference
 
 # Bytes and Binary
 
-When it comes to working with computers, one thing becomes very apparenent: there's a lot of data. Now naturally, when you have a lot of data you have to figure out how you want to **store** the data. Just like how leftover Christmas decorations are stored in bins inside of garages, data is stored inside of bytes inside of a file. So what is a byte?
+When it comes to working with computers, one thing becomes very apparently: there's a lot of data. Now naturally, when you have a lot of data you have to figure out how you want to **store** the data. Just like how leftover Christmas decorations are stored in bins inside of garages, data is stored inside of bytes inside of a file. So what is a byte?
 
 Bytes are a term used to represent 8 bits, simply a `1` or a `0`. So, a byte might look something like this: `00111010`.
 
@@ -82,7 +82,7 @@ These binary representations of each character would then be stored in a file. L
 
 Now as it turns out, there are a lot of people who want to use computers who don't speak English and need to represent characters that we don't have in English (Arabic, Spanish, French, Chinese, etc.). The solution to this is using a different type of encoding rather than ASCII, referred to as [file encodings]({% link reference/encodings.md %}).
 
-However, the most common encoding, `UTF-8`, simply extends ASCII to add extra characters because ASCII does not use all 256 numbers, it only uses around 127. So, in a modern day file, the word "Hello" would be representes as follows:
+However, the most common encoding, `UTF-8`, simply extends ASCII to add extra characters because ASCII does not use all 256 numbers, it only uses around 127. So, in a modern day file, the word "Hello" would be represents as follows:
 
 ```text
 Text: Hello
@@ -92,16 +92,55 @@ UTF-8 Binary: 01001000 01100101 01101100 01101100 01101111
 
 To try this out on your own, check out [Online Utf8 Tools](https://onlineutf8tools.com/convert-utf8-to-binary).
 
+## Endianness
+
+When working with bytes and storing them in memory you run into a problem. How do you store a sequency of bytes in memory? So, for example, let's say we have the following bytes:
+
+| 11110000 | 01011010 |
+
+And let's save we have some memory allocated for our 2 bytes that looks like this:
+
+| (empty byte) | (empty byte) |
+
+How do you want to store the bytes in memory?
+
+Looking at it like this, the simple solution is to just store them sequentially with the first byte being stored in the first byte of memory, and the second byte in the second byte of memory.
+
+Our memory would then look like this:
+
+| 11110000 | 01011010 |
+
+This approach is called **big endian ordering**. The other approach is called **little endian ordering** which, you guessed it, is the opposite. If we were to store the same two bytes with little endian ordering in memory, it would look like this:
+
+| 01011010 | 11110000 |
+
+Now using big vs litter endian ordering doesn't make a large difference in practice, it's just important that all of the software and hardware interacting with the memory knows which endian ordering it's using. It's also important to ensure that other computers receiving data know what endian ordering the data is being transmitted with so the other computer can correctly interpret the bytes.
+
+If endianness still doesn't make complete sense or you're interested in learning more, you should check out [Computerphile's video about endianness](https://www.youtube.com/watch?v=thrx3SBEpL8) or [the article about it on Wikipedia](https://en.wikipedia.org/wiki/Endianness).
+
 ## Kilobytes, Megabytes, and Beyond
 
-Stub.
+When dealing with data in the real world, you'll often encounter files larger than a few hundreds bytes. Often these files can reach into the thousands, millions, and even billions of bytes. Luckily, rather than saying that a file of 1,000,000 bytes is 1,000,000 bytes, we can simply say it is 1 **megabyte**. This is the same reason we say the Moon is 384,400 km away from the Earth, not 384,400,000 meters. Bytes use standard [metric prefixes](https://en.wikipedia.org/wiki/Metric_prefix), so any metric prefix means the same thing when talking about meters, bytes, or any other metric measurement.
+
+| Name     | Base 10       | Decimal               |
+| -------- | ------------- | --------------------- |
+| Kilobyte | $ 10 ^ 3 $    | 1,000                 |
+| Megabyte | $ 10 ^ 6 $    | 1,000,000             |
+| Gigabyte | $ 10 ^ 9 $    | 1,000,000,000         |
+| Terabyte | $ 10 ^ {12} $ | 1,000,000,000,000     |
+| Peta     | $ 10 ^ {15} $ | 1,000,000,000,000,000 |
+
+You can learn more about binary prefixes [on Wikipedia](https://en.wikipedia.org/wiki/Binary_prefix).
 
 ## Resources
 
 If you want to learn more about bytes and binary in general, check out some of these great resources:
 
 - [Binary on Wikipedia](https://en.wikipedia.org/wiki/Binary_number)
+- [Endianness on Wikipedia](https://en.wikipedia.org/wiki/Endianness)
 - [Byte on Wikipedia](https://en.wikipedia.org/wiki/Byte)
 - [Bit on Wikipedia](https://en.wikipedia.org/wiki/Bit)
 - [Khan Academy Binary Course](https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:digital-information/xcae6f4a7ff015e7d:binary-numbers/a/bits-and-binary)
 - [Byte Size Infographic](https://www.redcentricplc.com/resources/byte-size-infographic/)
+- [Why Use Binary? - Computerphile](https://www.youtube.com/watch?v=thrx3SBEpL8)
+- [Endianness Explained With an Egg - Computerphile](https://www.youtube.com/watch?v=NcaiHcBvDR4)
