@@ -12,6 +12,9 @@ permalink: pretty
 
 exclude: [node_modules, gulpfile.js]
 
+plugins:
+  - jekyll-spaceship
+
 sass:
   sass_dir: _sass
 
