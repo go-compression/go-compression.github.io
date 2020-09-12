@@ -2,7 +2,7 @@
 title: Huffman
 layout: default
 parent: Overview of Algorithms
-nav_order: 2
+nav_order: 3
 has_children: false
 ---
 
