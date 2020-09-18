@@ -25,6 +25,8 @@ These claims about the "lost of art of compression" may seem a bit unsubstantiat
 - [LZ4](https://github.com/lz4/lz4)
 - [Shrynk](https://github.com/kootenpv/shrynk)
 
+There are also some other notable projects which I've included at the end, but either they aren't active or universal enough to be included here.
+
 However this argument still holds true, compression isn't really mainstream, and I don't know why it isn't. Internet speeds is a real problem and better compression stands as a promising solution. The possibilities of better compression are truly endless:
 
 - Faster 4k video streaming
@@ -42,13 +44,12 @@ With all of that said, if you're interested in learning more about the world of 
 
 ## Notable Compression Project Mentions
 
-There are also some other notable projects which I've included at the end, but either they aren't active enough or univeral to be included here.
-
 Notable mentions:
 
 - [LZHAM](https://github.com/richgel999/lzham_codec) (not super active)
 - [Google's WebP](https://developers.google.com/speed/webp/) (only for images)
 - [Dropbox's DivANS](https://github.com/dropbox/divans)
 - [Dropbox's avrecode](https://github.com/dropbox/avrecode)
+- [Dropbox's Lepton](https://github.com/dropbox/lepton)
 - [H.266/VCC Codec](https://www.leawo.org/tutorial/h266-vs-h-265-whats-the-difference-1398.html) (domain-specific for video)
 - [Pied Piper Middle-Out](http://www.piedpiper.com/) (abandoned and closed-source unfortunately)

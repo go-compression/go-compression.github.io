@@ -16,7 +16,7 @@ The idea behind this is that it will never increase the size of a file by adding
 
 Let's take a look at some examples, so we can _see_ exactly how it works. The [wikipedia article for LZSS](https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski) has a great example for this, which I'll use here, and it's worth a read as an introduction to LZSS.
 
-So let's encode an exceprt of Dr. Seuss's Green Eggs and Ham with LZSS (credit to Wikipedia for this example).
+So let's encode an excerpt of Dr. Seuss's Green Eggs and Ham with LZSS (credit to Wikipedia for this example).
 
 ```
 I AM SAM. I AM SAM. SAM I AM.
@@ -55,7 +55,7 @@ I AM SAM. <10,10>SAM I AM.
 
 The encoder works character by character. On the first character, 'I', it checks it's search buffer to see if it's already seen an 'I'. The search buffer is essentially the encoder's memory, for every character it encodes, it adds it into the search buffer so it can "remember" it. Because it hasn't seen an 'I' already (the search buffer is empty), it just outputs an 'I', adds it to the search buffer, and moves to the next character. The next character is ' ' (a space). The encoder checks the search buffer to see if it's seen a space before, and it hasn't so it outputs the space and moves forward.
 
-Once it gets to the second space (after "I AM"), the LZ77 starts to come into play. It's already seen a space before because it's in the search buffer so it's ready to output a token, but first it tries to maximize how much text the token is referencing. If it didn't do this you could imagine that for every character it's already seen it would output something similar to `<5,1>`, which is 5 times larger than any character. So once it finds a character that it's already seen, it moves on to the next character and checks if it's already seen the next character directly after the previous chracter. Once it finds a sequence of characters that it hasn't already seen, then it goes back one character to the sequence of characters it's already seen and prepares the token.
+Once it gets to the second space (after "I AM"), the LZ77 starts to come into play. It's already seen a space before because it's in the search buffer so it's ready to output a token, but first it tries to maximize how much text the token is referencing. If it didn't do this you could imagine that for every character it's already seen it would output something similar to `<5,1>`, which is 5 times larger than any character. So once it finds a character that it's already seen, it moves on to the next character and checks if it's already seen the next character directly after the previous character. Once it finds a sequence of characters that it hasn't already seen, then it goes back one character to the sequence of characters it's already seen and prepares the token.
 
 Once the token is ready, the difference between LZ77 and LZSS starts to shine. At this point LZ77 simply outputs the token, adds the characters to the search buffer and continues. LZSS does something a little smarter, it will check to see if the size of the outputted token is larger than the text it's representing. If so, it will output the text it represents, not the token, add the text to the search buffer, and continue. If not, it will output the token, add the text it represents to the search buffer and continue.
 
@@ -287,7 +287,7 @@ And that's essentially LZ77! Try it out for yourself with some different strings
 
 ### Comparing Token Sizes
 
-This crucial piece is the process described earlier of comparing the size of tokens versus the text it represents. Essnetially we're saying, if the token takes up more space than the text it's representing then don't output a token, just output the text.
+This crucial piece is the process described earlier of comparing the size of tokens versus the text it represents. Essentially we're saying, if the token takes up more space than the text it's representing then don't output a token, just output the text.
 ![](/assets/LZ1.png)
 
 Lucky for us this is a pretty simple change. Our main loop now looks like so:
