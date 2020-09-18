@@ -1,7 +1,7 @@
 ---
 title: Tree Building Implementation
 layout: default
-parent: Hufffman
+parent: Huffman
 grand_parent: Overview of Algorithms
 nav_order: 1
 ---
