@@ -35,7 +35,9 @@
 </li></ul>
 </li>
 <li class="nav-list-item "><a href="/algorithms/dictionary/" class="nav-list-link">Dictionary Coding</a></li>
-<li class="nav-list-item active"><a href="/algorithms/huffman/" class="nav-list-link active">Huffman</a></li>
+<li class="nav-list-item active">
+<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/algorithms/huffman/" class="nav-list-link active">Huffman</a><ul class="nav-list"></ul>
+</li>
 <li class="nav-list-item "><a href="/algorithms/dmc/" class="nav-list-link">Dynamic Markov Compression</a></li>
 <li class="nav-list-item "><a href="/algorithms/arithmetic/" class="nav-list-link">Arithmetic Coding</a></li>
 </ul>
@@ -198,6 +200,9 @@ THAT SAM-I-AM! THAT SAM-I-AM! I DO NOT LIKE THAT SAM-I-AM!
 <p>Before encoding the characters, the tree is traversed once and the values for each leaf are outputted in two corresponding arrays. The first array contains the value of each character, while the second contains its updated bit value.</p>
 <p>Once created, the arrays are traversed and each character in the input is replaced with its updated bit value.</p>
 <p>Once a new output text is generated, it is encoded as a byte array and written to the output file.</p>
+<hr>
+<h2 class="text-delta">Table of contents</h2>
+<ul></ul>
 <hr>
 <footer><p><a href="#top" id="back-to-top">Back to top</a></p>
 <p class="text-small text-grey-dk-000 mb-0">If you see something off, please consider <a href="https://go-compression.github.io/contributing/">contributing</a>.</p>

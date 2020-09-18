@@ -3,7 +3,7 @@ title: Huffman
 layout: default
 parent: Overview of Algorithms
 nav_order: 3
-has_children: false
+has_children: true
 ---
 
 # Huffman
