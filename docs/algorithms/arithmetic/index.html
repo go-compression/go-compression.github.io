@@ -44,23 +44,28 @@
 </ul>
 </li>
 <li class="nav-list-item">
-<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list "><li class="nav-list-item ">
+<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list ">
+<li class="nav-list-item ">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/lz/lz/" class="nav-list-link">LZ77/LZSS</a><ul class="nav-list">
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_encoder/" class="nav-list-link">Fullscreen Encoder</a>
 </li>
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_decoder/" class="nav-list-link">Fullscreen Decoder</a>
 </li>
 </ul>
-</li></ul>
+</li>
+<li class="nav-list-item "><a href="/interactive/arithmetic/" class="nav-list-link">Arithmetic Coding</a></li>
+</ul>
 </li>
 <li class="nav-list-item">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/reference/reference/" class="nav-list-link">Reference</a><ul class="nav-list ">
 <li class="nav-list-item "><a href="/reference/bytes/" class="nav-list-link">Bytes and Binary</a></li>
-<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">File Encodings</a></li>
+<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">Character Encodings</a></li>
 <li class="nav-list-item "><a href="/reference/compression_ratios/" class="nav-list-link">Compression Ratios</a></li>
-<li class="nav-list-item "><a href="/reference/magic_types/" class="nav-list-link">Unix Magic Types</a></li>
+<li class="nav-list-item "><a href="/reference/magic_numbers/" class="nav-list-link">Unix Magic Numbers</a></li>
+<li class="nav-list-item "><a href="/reference/raisin/" class="nav-list-link">Raisin</a></li>
 </ul>
 </li>
+<li class="nav-list-item"><a href="/resources/" class="nav-list-link">Resources</a></li>
 <li class="nav-list-item"><a href="/contributing/" class="nav-list-link">Contributing</a></li>
 <li class="nav-list-item"><a href="/attributions/" class="nav-list-link">Attributions</a></li>
 </ul></nav><footer class="site-footer"> This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</footer>
@@ -85,7 +90,38 @@
 <li class="breadcrumb-nav-list-item"><span>Arithmetic Coding</span></li>
 </ol></nav><div id="main-content" class="main-content" role="main">
 <h1 id="arithmetic-coding"> <a href="#arithmetic-coding" class="anchor-heading" aria-labelledby="arithmetic-coding"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Arithmetic Coding</h1>
-<p>Stub.</p>
+<p>In the world of dictionary coding and probability based encoding, the floating point weirdness that is arithmetic coding is a refreshing and surprisingly efficient lossless compression algorithm.</p>
+<p>At a very broad level arithmetic coding works by taking assigning a character frequency table to a number line between 0 and 1. So, if we have the character frequency table as shown below, we would end up with our number line shown below.</p>
+<div class="table-wrapper"><table>
+<thead><tr>
+<th>Character</th>
+<th>Frequency</th>
+<th>Probability</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>H</td>
+<td>1</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>E</td>
+<td>1</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>L</td>
+<td>2</td>
+<td>40%</td>
+</tr>
+<tr>
+<td>O</td>
+<td>1</td>
+<td>20%</td>
+</tr>
+</tbody>
+</table></div>
+<p><img src="/assets/arithmetic1.png" alt=""></p>
 <hr>
 <footer><p><a href="#top" id="back-to-top">Back to top</a></p>
 <p class="text-small text-grey-dk-000 mb-0">If you see something off, please consider <a href="https://go-compression.github.io/contributing/">contributing</a>.</p>

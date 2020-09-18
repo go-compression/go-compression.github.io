@@ -44,23 +44,28 @@
 </ul>
 </li>
 <li class="nav-list-item">
-<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list "><li class="nav-list-item ">
+<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list ">
+<li class="nav-list-item ">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/lz/lz/" class="nav-list-link">LZ77/LZSS</a><ul class="nav-list">
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_encoder/" class="nav-list-link">Fullscreen Encoder</a>
 </li>
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_decoder/" class="nav-list-link">Fullscreen Decoder</a>
 </li>
 </ul>
-</li></ul>
+</li>
+<li class="nav-list-item "><a href="/interactive/arithmetic/" class="nav-list-link">Arithmetic Coding</a></li>
+</ul>
 </li>
 <li class="nav-list-item active">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/reference/reference/" class="nav-list-link">Reference</a><ul class="nav-list ">
 <li class="nav-list-item "><a href="/reference/bytes/" class="nav-list-link">Bytes and Binary</a></li>
-<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">File Encodings</a></li>
+<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">Character Encodings</a></li>
 <li class="nav-list-item active"><a href="/reference/compression_ratios/" class="nav-list-link active">Compression Ratios</a></li>
-<li class="nav-list-item "><a href="/reference/magic_types/" class="nav-list-link">Unix Magic Types</a></li>
+<li class="nav-list-item "><a href="/reference/magic_numbers/" class="nav-list-link">Unix Magic Numbers</a></li>
+<li class="nav-list-item "><a href="/reference/raisin/" class="nav-list-link">Raisin</a></li>
 </ul>
 </li>
+<li class="nav-list-item"><a href="/resources/" class="nav-list-link">Resources</a></li>
 <li class="nav-list-item"><a href="/contributing/" class="nav-list-link">Contributing</a></li>
 <li class="nav-list-item"><a href="/attributions/" class="nav-list-link">Attributions</a></li>
 </ul></nav><footer class="site-footer"> This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</footer>
@@ -85,7 +90,19 @@
 <li class="breadcrumb-nav-list-item"><span>Compression Ratios</span></li>
 </ol></nav><div id="main-content" class="main-content" role="main">
 <h1 id="compression-ratios"> <a href="#compression-ratios" class="anchor-heading" aria-labelledby="compression-ratios"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Compression Ratios</h1>
-<p>Stub. https://en.wikipedia.org/wiki/Data_compression_ratio</p>
+<p>Compression ratios are generally used to represent how good a compression algorithm is at compressing. Generally, this is represented as the uncompressed size divided by the compressed size, yielding a number (hopefully) greater than 1. The higher the compression ratio, the better the compression algorithm is.</p>
+<p><img src="/assets/CompressionRatio.svg" alt=""></p>
+<blockquote><p>Equation from <a href="https://en.wikipedia.org/wiki/Data_compression_ratio">Wikipedia</a></p></blockquote>
+<p>It should also be noted that a better compression ratio does not always indicate a better compression algorithm. Some algorithms are designed to give a moderate compression ratio with very good speed, while others are focused on good compression ratios and moderate speed. The use case of a compression algorithm are what determines what factors of a compression algorithm are favorable. For example, when streaming video you must be able to decode each frame relatively quickly, but when downloading a large game it may be preferable to download a smaller file and take time to decode the compressed files.</p>
+<h2 id="resources"> <a href="#resources" class="anchor-heading" aria-labelledby="resources"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Resources</h2>
+<p>Some good resources to learn more about compression algorithms include:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Data_compression_ratio">Data compression ratio on Wikipedia</a></li>
+<li>
+<a href="https://cran.r-project.org/web/packages/brotli/vignettes/brotli-2015-09-22.pdf">Comparison of Algorithms</a> (helpful to see how compression ratios are compared)</li>
+<li>
+<a href="https://www.cs.rit.edu/~std3246/thesis/node36.html">Comparison of Different Compression Algorithms</a> (helpful to see how compression ratios are compared)</li>
+</ul>
 <hr>
 <footer><p><a href="#top" id="back-to-top">Back to top</a></p>
 <p class="text-small text-grey-dk-000 mb-0">If you see something off, please consider <a href="https://go-compression.github.io/contributing/">contributing</a>.</p>

@@ -7,4 +7,4 @@ has_children: true
 
 # Interactive Algorithms
 
-Stub.
+This section serves as a collection of interactive algorithms that make it easier to experiment and visually see how an data compression algorithm works.

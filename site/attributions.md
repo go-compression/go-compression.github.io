@@ -1,12 +1,12 @@
 ---
 layout: default
 title: Attributions
-nav_order: 8
+nav_order: 9
 ---
 
 # Attributions
 
-This non-exhaustive list of wonderful projects, frameworks, tools, and libraries were used to build this website:
+This non-exhaustive list of wonderful projects, frameworks, tools, and libraries were used to help build this website.
 
 - [Just the Docs Jekyll theme](https://github.com/pmarsceill/just-the-docs)
 - [Jekyll](https://jekyllrb.com/)

@@ -128,7 +128,7 @@ When dealing with data in the real world, you'll often encounter files larger th
 | Megabyte | $ 10 ^ 6 $    | 1,000,000             |
 | Gigabyte | $ 10 ^ 9 $    | 1,000,000,000         |
 | Terabyte | $ 10 ^ {12} $ | 1,000,000,000,000     |
-| Peta     | $ 10 ^ {15} $ | 1,000,000,000,000,000 |
+| Petabyte | $ 10 ^ {15} $ | 1,000,000,000,000,000 |
 
 You can learn more about binary prefixes [on Wikipedia](https://en.wikipedia.org/wiki/Binary_prefix).
 

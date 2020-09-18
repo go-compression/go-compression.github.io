@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+{{ content }}
+
+{% include inputs/arithmetic.html %}
+
+{% include inputs/arithmetic_encode.html %}
+
+<script src="/assets/js/arithmetic/encode.js" type="text/javascript"></script>
+<script src="/assets/js/wasm_exec.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    window.addEventListener("load", function () {
+        var a = new Arithmetic({});
+    });
+</script>
+
+<div>
+    <p>Output:</p>
+    <p id="encode-output-text"></p>
+</div>

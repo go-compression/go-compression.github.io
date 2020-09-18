@@ -44,23 +44,28 @@
 </ul>
 </li>
 <li class="nav-list-item">
-<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list "><li class="nav-list-item ">
+<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list ">
+<li class="nav-list-item ">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/lz/lz/" class="nav-list-link">LZ77/LZSS</a><ul class="nav-list">
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_encoder/" class="nav-list-link">Fullscreen Encoder</a>
 </li>
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_decoder/" class="nav-list-link">Fullscreen Decoder</a>
 </li>
 </ul>
-</li></ul>
+</li>
+<li class="nav-list-item "><a href="/interactive/arithmetic/" class="nav-list-link">Arithmetic Coding</a></li>
+</ul>
 </li>
 <li class="nav-list-item">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/reference/reference/" class="nav-list-link">Reference</a><ul class="nav-list ">
 <li class="nav-list-item "><a href="/reference/bytes/" class="nav-list-link">Bytes and Binary</a></li>
-<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">File Encodings</a></li>
+<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">Character Encodings</a></li>
 <li class="nav-list-item "><a href="/reference/compression_ratios/" class="nav-list-link">Compression Ratios</a></li>
-<li class="nav-list-item "><a href="/reference/magic_types/" class="nav-list-link">Unix Magic Types</a></li>
+<li class="nav-list-item "><a href="/reference/magic_numbers/" class="nav-list-link">Unix Magic Numbers</a></li>
+<li class="nav-list-item "><a href="/reference/raisin/" class="nav-list-link">Raisin</a></li>
 </ul>
 </li>
+<li class="nav-list-item"><a href="/resources/" class="nav-list-link">Resources</a></li>
 <li class="nav-list-item"><a href="/contributing/" class="nav-list-link">Contributing</a></li>
 <li class="nav-list-item"><a href="/attributions/" class="nav-list-link">Attributions</a></li>
 </ul></nav><footer class="site-footer"> This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</footer>
@@ -90,7 +95,7 @@
 <p>The idea behind this is that it will never increase the size of a file by adding tokens everywhere for repeated letters. You can imagine that LZ77 would easily increase the file size if it simply encoded every repeated letter “e” or “i” as a token, which may take at least 5 bytes depending on the file and implementation.</p>
 <h2 id="implementing-an-encoder"> <a href="#implementing-an-encoder" class="anchor-heading" aria-labelledby="implementing-an-encoder"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Implementing an Encoder</h2>
 <p>Let’s take a look at some examples, so we can <em>see</em> exactly how it works. The <a href="https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Storer%E2%80%93Szymanski">wikipedia article for LZSS</a> has a great example for this, which I’ll use here, and it’s worth a read as an introduction to LZSS.</p>
-<p>So let’s encode an exceprt of Dr. Seuss’s Green Eggs and Ham with LZSS (credit to Wikipedia for this example).</p>
+<p>So let’s encode an excerpt of Dr. Seuss’s Green Eggs and Ham with LZSS (credit to Wikipedia for this example).</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I AM SAM. I AM SAM. SAM I AM.
 
 THAT SAM-I-AM! THAT SAM-I-AM! I DO NOT LIKE THAT SAM-I-AM!
@@ -116,7 +121,7 @@ I&lt;69,15&gt;EM,&lt;113,8&gt;.&lt;29,15&gt;GR&lt;64,16&gt;.
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I AM SAM. &lt;10,10&gt;SAM I AM.
 </code></pre></div></div>
 <p>The encoder works character by character. On the first character, ‘I’, it checks it’s search buffer to see if it’s already seen an ‘I’. The search buffer is essentially the encoder’s memory, for every character it encodes, it adds it into the search buffer so it can “remember” it. Because it hasn’t seen an ‘I’ already (the search buffer is empty), it just outputs an ‘I’, adds it to the search buffer, and moves to the next character. The next character is ‘ ‘ (a space). The encoder checks the search buffer to see if it’s seen a space before, and it hasn’t so it outputs the space and moves forward.</p>
-<p>Once it gets to the second space (after “I AM”), the LZ77 starts to come into play. It’s already seen a space before because it’s in the search buffer so it’s ready to output a token, but first it tries to maximize how much text the token is referencing. If it didn’t do this you could imagine that for every character it’s already seen it would output something similar to <code class="language-plaintext highlighter-rouge">&lt;5,1&gt;</code>, which is 5 times larger than any character. So once it finds a character that it’s already seen, it moves on to the next character and checks if it’s already seen the next character directly after the previous chracter. Once it finds a sequence of characters that it hasn’t already seen, then it goes back one character to the sequence of characters it’s already seen and prepares the token.</p>
+<p>Once it gets to the second space (after “I AM”), the LZ77 starts to come into play. It’s already seen a space before because it’s in the search buffer so it’s ready to output a token, but first it tries to maximize how much text the token is referencing. If it didn’t do this you could imagine that for every character it’s already seen it would output something similar to <code class="language-plaintext highlighter-rouge">&lt;5,1&gt;</code>, which is 5 times larger than any character. So once it finds a character that it’s already seen, it moves on to the next character and checks if it’s already seen the next character directly after the previous character. Once it finds a sequence of characters that it hasn’t already seen, then it goes back one character to the sequence of characters it’s already seen and prepares the token.</p>
 <p>Once the token is ready, the difference between LZ77 and LZSS starts to shine. At this point LZ77 simply outputs the token, adds the characters to the search buffer and continues. LZSS does something a little smarter, it will check to see if the size of the outputted token is larger than the text it’s representing. If so, it will output the text it represents, not the token, add the text to the search buffer, and continue. If not, it will output the token, add the text it represents to the search buffer and continue.</p>
 <p><img src="/assets/LZ1.png" alt=""></p>
 <p>Coming back to our example, the space character has already been seen, but a space followed by an “S” hasn’t been seen yet (“ S”), so we prepare the token representing the space. The token in our case would be “&lt;3,1&gt;”, which means go back three characters and copy 1 character(s). Next we check to see if our token is longer than our text, and “&lt;3,1&gt;” is indeed longer than “ “, so it wouldn’t make sense to output the token, so we output the space, add it to our search buffer, and continue.</p>
@@ -290,7 +295,7 @@ M
 <p>Now we have the best part: the logic. If we couldn’t find a match or it’s the last character we want to output something. If we couldn’t find more than one character in the <code class="language-plaintext highlighter-rouge">search_buffer</code> then that means <code class="language-plaintext highlighter-rouge">check_characters</code> minus the last character was found, so we’ll output a token representing <code class="language-plaintext highlighter-rouge">check_characters</code> minus the last character. Otherwise, we couldn’t find a match for a single character so let’s just output that character.</p>
 <p>And that’s essentially LZ77! Try it out for yourself with some different strings to see for yourself. However you might notice that we’re trying to implement LZSS, not LZ77, so we have one more piece to implement.</p>
 <h3 id="comparing-token-sizes"> <a href="#comparing-token-sizes" class="anchor-heading" aria-labelledby="comparing-token-sizes"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Comparing Token Sizes</h3>
-<p>This crucial piece is the process described earlier of comparing the size of tokens versus the text it represents. Essnetially we’re saying, if the token takes up more space than the text it’s representing then don’t output a token, just output the text. <img src="/assets/LZ1.png" alt=""></p>
+<p>This crucial piece is the process described earlier of comparing the size of tokens versus the text it represents. Essentially we’re saying, if the token takes up more space than the text it’s representing then don’t output a token, just output the text. <img src="/assets/LZ1.png" alt=""></p>
 <p>Lucky for us this is a pretty simple change. Our main loop now looks like so:</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text_bytes</span><span class="p">:</span>
     <span class="n">check_characters</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>

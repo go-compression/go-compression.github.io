@@ -44,23 +44,28 @@
 </ul>
 </li>
 <li class="nav-list-item">
-<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list "><li class="nav-list-item ">
+<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list ">
+<li class="nav-list-item ">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/lz/lz/" class="nav-list-link">LZ77/LZSS</a><ul class="nav-list">
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_encoder/" class="nav-list-link">Fullscreen Encoder</a>
 </li>
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_decoder/" class="nav-list-link">Fullscreen Decoder</a>
 </li>
 </ul>
-</li></ul>
+</li>
+<li class="nav-list-item "><a href="/interactive/arithmetic/" class="nav-list-link">Arithmetic Coding</a></li>
+</ul>
 </li>
 <li class="nav-list-item">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/reference/reference/" class="nav-list-link">Reference</a><ul class="nav-list ">
 <li class="nav-list-item "><a href="/reference/bytes/" class="nav-list-link">Bytes and Binary</a></li>
-<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">File Encodings</a></li>
+<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">Character Encodings</a></li>
 <li class="nav-list-item "><a href="/reference/compression_ratios/" class="nav-list-link">Compression Ratios</a></li>
-<li class="nav-list-item "><a href="/reference/magic_types/" class="nav-list-link">Unix Magic Types</a></li>
+<li class="nav-list-item "><a href="/reference/magic_numbers/" class="nav-list-link">Unix Magic Numbers</a></li>
+<li class="nav-list-item "><a href="/reference/raisin/" class="nav-list-link">Raisin</a></li>
 </ul>
 </li>
+<li class="nav-list-item"><a href="/resources/" class="nav-list-link">Resources</a></li>
 <li class="nav-list-item"><a href="/contributing/" class="nav-list-link">Contributing</a></li>
 <li class="nav-list-item"><a href="/attributions/" class="nav-list-link">Attributions</a></li>
 </ul></nav><footer class="site-footer"> This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</footer>
@@ -85,7 +90,29 @@
 <li class="breadcrumb-nav-list-item"><span>Dynamic Markov Compression</span></li>
 </ol></nav><div id="main-content" class="main-content" role="main">
 <h1 id="dynamic-markov-compression"> <a href="#dynamic-markov-compression" class="anchor-heading" aria-labelledby="dynamic-markov-compression"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Dynamic Markov Compression</h1>
-<p>Stub.</p>
+<p>Dynamic Markov Compression is an obscure form of compression that uses <a href="https://en.wikipedia.org/wiki/Markov_chain">Markov chains</a> to model the patterns represented in a file.</p>
+<h2 id="markov-chains"> <a href="#markov-chains" class="anchor-heading" aria-labelledby="markov-chains"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Markov Chains</h2>
+<p>Markov Chains are a simple way to model the transition between states based on a measureable probability. For example, if we could use a Markov Chain to model the probability that it will become sunny if it’s already raining, or vice-versa.</p>
+<p><img src="/assets/MarkovChains.png" alt="Markov Chain diagram for sunny and rainy states"></p>
+<p>Each circle represents a <strong>state</strong>, and each arrow represents a <strong>transition</strong>. In this example, we have two states, raining and sunny, a perfect representation of true weather. Each state has two possible transitions, it can transition to itself again or it can transition to another state. The likelihood of each transition is defined by a percentage representing the probability that the transition occurs.</p>
+<p>Now let’s say it’s sunny and we’re following this model. According to the model there’s a 50% chance it’s sunny <strong>again</strong> tomorrow or a 50% chance it’s rainy tomorrow. If it becomes rainy, then there’s a 25% chance it’s rainy the day after that or a 75% chance it’s sunny the day after that.</p>
+<p>Markov Chains may sound scary but the essence of how they work is quite simple. Markov Chains are the statistical model behind a lot of the technology we use today from Google’s PageRank search algorithm to predictive text on smartphone keyboards. If you’d like to learn more, check out this <a href="https://setosa.io/ev/markov-chains/">wonderful article</a> by Victor Powell and Lewis Lehe that goes into depth about how Markov Chains work. They also have a wonderful <a href="https://setosa.io/markov">interactive demo</a>.</p>
+<h2 id="markov-chain-powered-compression"> <a href="#markov-chain-powered-compression" class="anchor-heading" aria-labelledby="markov-chain-powered-compression"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Markov Chain Powered Compression</h2>
+<p>Dynamic Markov Compression is a very obscure and complicated subject when it comes to implementation, and unfortunately I cannot claim to understand it well enough to explain it myself. Though, I have written a similar algorithm from my own trial-and-error that employs stateful Markov chains that model a file. You can find the source code within the <a href="/reference/raisin/">Raisin project</a> under the <a href="https://github.com/go-compression/raisin/blob/master/compressor/mcc"><code class="language-plaintext highlighter-rouge">compressor/mcc</code> package</a>. This code is un-optimized and a bit messy as it exists only as a research project to learn more about DMC.</p>
+<p>If you have a better understanding of DMC and would like to contribute to this article, we would appreciate any and all <a href="/contributing/">contributions</a>!</p>
+<h2 id="resources"> <a href="#resources" class="anchor-heading" aria-labelledby="resources"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Resources</h2>
+<p>If you’re interested in trying to implement DMC yourself or are just interested in the algorithm, here’s a few helpful resources as a jumping-off point:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Dynamic_Markov_compression">Dynamic Markov Compression on Wikipedia</a></li>
+<li><a href="https://ir.canterbury.ac.nz/bitstream/handle/10092/9572/whitehead_thesis.pdf?sequence=1">An Exploration of Dynamic Markov Compression Thesis</a></li>
+<li>
+<a href="https://ieeexplore.ieee.org/document/515497">The structure of DMC</a> (Paywall)</li>
+<li><a href="https://academic.oup.com/comjnl/article-pdf/30/6/541/935458/30-6-541.pdf">Original Paper</a></li>
+<li>
+<a href="https://web.archive.org/web/20070630111546/http://plg.uwaterloo.ca/~ftp/dmc/dmc.c">Original C Implementation</a> by Gordon Cormack</li>
+<li><a href="https://www.youtube.com/watch?v=05RFEGWNxts">Markov Chain Compression - Compressor Head</a></li>
+<li><a href="https://setosa.io/ev/markov-chains/">Markov Chains</a></li>
+</ul>
 <hr>
 <footer><p><a href="#top" id="back-to-top">Back to top</a></p>
 <p class="text-small text-grey-dk-000 mb-0">If you see something off, please consider <a href="https://go-compression.github.io/contributing/">contributing</a>.</p>

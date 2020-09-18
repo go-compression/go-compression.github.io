@@ -44,23 +44,28 @@
 </ul>
 </li>
 <li class="nav-list-item">
-<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list "><li class="nav-list-item ">
+<a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/interactive/" class="nav-list-link">Interactive Algorithms</a><ul class="nav-list ">
+<li class="nav-list-item ">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/interactive/lz/lz/" class="nav-list-link">LZ77/LZSS</a><ul class="nav-list">
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_encoder/" class="nav-list-link">Fullscreen Encoder</a>
 </li>
 <li class="nav-list-item "> <a href="/interactive/lz/fullscreen_decoder/" class="nav-list-link">Fullscreen Decoder</a>
 </li>
 </ul>
-</li></ul>
+</li>
+<li class="nav-list-item "><a href="/interactive/arithmetic/" class="nav-list-link">Arithmetic Coding</a></li>
+</ul>
 </li>
 <li class="nav-list-item">
 <a href="#" class="nav-list-expander"><svg viewbox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/reference/reference/" class="nav-list-link">Reference</a><ul class="nav-list ">
 <li class="nav-list-item "><a href="/reference/bytes/" class="nav-list-link">Bytes and Binary</a></li>
-<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">File Encodings</a></li>
+<li class="nav-list-item "><a href="/reference/encodings/" class="nav-list-link">Character Encodings</a></li>
 <li class="nav-list-item "><a href="/reference/compression_ratios/" class="nav-list-link">Compression Ratios</a></li>
-<li class="nav-list-item "><a href="/reference/magic_types/" class="nav-list-link">Unix Magic Types</a></li>
+<li class="nav-list-item "><a href="/reference/magic_numbers/" class="nav-list-link">Unix Magic Numbers</a></li>
+<li class="nav-list-item "><a href="/reference/raisin/" class="nav-list-link">Raisin</a></li>
 </ul>
 </li>
+<li class="nav-list-item"><a href="/resources/" class="nav-list-link">Resources</a></li>
 <li class="nav-list-item"><a href="/contributing/" class="nav-list-link">Contributing</a></li>
 <li class="nav-list-item"><a href="/attributions/" class="nav-list-link">Attributions</a></li>
 </ul></nav><footer class="site-footer"> This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</footer>
@@ -85,7 +90,80 @@
 <li class="breadcrumb-nav-list-item"><span>Dictionary Coding</span></li>
 </ol></nav><div id="main-content" class="main-content" role="main">
 <h1 id="dictionary-coding"> <a href="#dictionary-coding" class="anchor-heading" aria-labelledby="dictionary-coding"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Dictionary Coding</h1>
-<p>Stub.</p>
+<p>Dictionary coding one of the most primitive and powerful forms of compression that exists currently. In fact, we use it everyday in English. I’ve actually used it already. Did you catch that?</p>
+<p>The contraction “I’ve” is technically a form of dictionary coding because when we read the word we automatically expand it to “I have” in our mind. This simple concept is used everywhere from spoken languages, mathematic functions, to file encodings.</p>
+<p>More advanced forms of dictionary coding form the basis for many different compression algorithms aside from a simple search-and-replace step such as <a href="/algorithms/lz/">LZ</a>, <a href="/algorithms/huffman/">Huffman</a>, and more.</p>
+<h2 id="the-concept"> <a href="#the-concept" class="anchor-heading" aria-labelledby="the-concept"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> The Concept</h2>
+<p>Let’s get an idea of how you could use dictionary coding to compress data.</p>
+<p>So let’s say we’re working in a restaurant and we have to communicate to the chefs what food we need to be prepared on paper. Now our restaurant has three things on the menu:</p>
+<ul>
+<li>Pizza</li>
+<li>Fries</li>
+<li>Milkshakes</li>
+</ul>
+<p>Rather than writing down “pizza” or “fries” everytime someone order’s pizza or fries, we can assign each item a unique idea, or a code.</p>
+<ul>
+<li>
+<strong>1</strong> - Pizza</li>
+<li>
+<strong>2</strong> - Fries</li>
+<li>
+<strong>3</strong> - Milkshake</li>
+</ul>
+<p>Now when we’re preparing order tickets for the kitchen, we can simply write 1, 2, or 3. This simple concept is used to improve upon the most advanced modern compression algorithms.</p>
+<h2 id="implementation"> <a href="#implementation" class="anchor-heading" aria-labelledby="implementation"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Implementation</h2>
+<p>Implementing a dictionary coder and decoder is actually <strong>very</strong> simple. All we’re really doing is replacing the long text with corresponding codes to encode it, and doing replacing codes with the text it represents to decode it.</p>
+<p>Here’s a sample:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text</span> <span class="o">=</span> <span class="s">"Order: pizza, fries, milkshake"</span>
+<span class="n">encoded</span> <span class="o">=</span> <span class="n">text</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"pizza"</span><span class="p">,</span> <span class="s">"1"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"fries"</span><span class="p">,</span> <span class="s">"2"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"milkshake"</span><span class="p">,</span> <span class="s">"3"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+<span class="c1"># Order: 1, 2, 3
+</span></code></pre></div></div>
+<p>Decoding is the same, just in reverse:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text</span> <span class="o">=</span> <span class="s">"Order: 1, 2, 3"</span>
+<span class="n">decoded</span> <span class="o">=</span> <span class="n">text</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"1"</span><span class="p">,</span> <span class="s">"pizza"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"2"</span><span class="p">,</span> <span class="s">"fries"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"3"</span><span class="p">,</span> <span class="s">"milkshake"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">decoded</span><span class="p">)</span>
+<span class="c1"># Order: pizza, fries, milkshake
+</span></code></pre></div></div>
+<p>If we want to get a bit fancier we can even use a <strong>dictionary</strong> to dynamically pull codes and values from:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">codes</span> <span class="o">=</span> <span class="p">{</span><span class="s">"pizza"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span> <span class="s">"fries"</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span> <span class="s">"milkshake"</span><span class="p">:</span> <span class="s">"3"</span><span class="p">}</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s">"Order: pizza, fries, milkshake"</span>
+
+<span class="n">encoded</span> <span class="o">=</span> <span class="n">text</span>
+
+<span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">encoded</span> <span class="o">=</span> <span class="n">encoded</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+<span class="c1"># Order: 1, 2, 3
+</span></code></pre></div></div>
+<p>And to decode:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">codes</span> <span class="o">=</span> <span class="p">{</span><span class="s">"pizza"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span> <span class="s">"fries"</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span> <span class="s">"milkshake"</span><span class="p">:</span> <span class="s">"3"</span><span class="p">}</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s">"Order: 1, 2, 3"</span>
+
+<span class="n">decoded</span> <span class="o">=</span> <span class="n">text</span>
+
+<span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">decoded</span> <span class="o">=</span> <span class="n">decoded</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">decoded</span><span class="p">)</span>
+<span class="c1"># Order: pizza, fries, milkshake
+</span></code></pre></div></div>
+<h2 id="caveats"> <a href="#caveats" class="anchor-heading" aria-labelledby="caveats"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Caveats</h2>
+<p>The key to dictionary coding is that it solves a different problem than general-purpose encoders. A dictionary coder must be built with a known list of words (or bytes) that are very common to be able to see any real difference. For example, you could build a dictionary coder with the most common English character and encode Shakespeare, which would probably give you a good <a href="/reference/compression_ratios/">compression ratio</a>. But if you were to use the same dictionary to encode a PDF or HTML file you would get much worse results. You also have to make sure that both the coder and decoder have the same dictionaries, otherwise the encoded text will be useless.</p>
+<h2 id="common-usage"> <a href="#common-usage" class="anchor-heading" aria-labelledby="common-usage"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Common Usage</h2>
+<p>While dictionary coders may sound imperfect and niche, they’re quite the opposite. Web compression algorithms like <a href="https://brotli.io/">Brotli</a> use a dictionary with the most common words, HTML tags, JavaScript tokens, and CSS properties to encode web assets. <a href="https://gist.github.com/klauspost/2900d5ba6f9b65d69c8e">This dictionary</a>, while large, is insignificant compared to the savings they provide to each file they decode.</p>
+<p>Here’s some modern algorithms that employ dictionary coding:</p>
+<ul>
+<li><a href="https://brotli.io/">Brotli</a></li>
+<li><a href="https://facebook.github.io/zstd/">Zstandard</a></li>
+</ul>
+<h2 id="resources"> <a href="#resources" class="anchor-heading" aria-labelledby="resources"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Resources</h2>
+<p>If you’re interested in learning more about dictionary coding, check out some of these great resources:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Dictionary_coder">Dictionary coder on Wikipedia</a></li>
+<li><a href="https://courses.cs.washington.edu/courses/csep521/09au/DictionaryCoding.pdf">University of Washington Dictionary Coding</a></li>
+</ul>
 <hr>
 <footer><p><a href="#top" id="back-to-top">Back to top</a></p>
 <p class="text-small text-grey-dk-000 mb-0">If you see something off, please consider <a href="https://go-compression.github.io/contributing/">contributing</a>.</p>
