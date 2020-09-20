@@ -119,7 +119,7 @@ $margin-right: $margin;
   width: 100%;
 }
 
-.canvas-container-jtd:not(.container-jtd-fs) {
+.canvas-container-jtd:not(.container-jtd-fs):not(.pointer-events) {
   pointer-events: none;
 }
 

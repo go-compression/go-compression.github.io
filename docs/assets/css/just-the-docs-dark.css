@@ -1555,7 +1555,7 @@ pre.highlight code, figure.highlight code { padding: 0; border: 0; }
 
 .container-jtd-fs { border: 2px solid gray; border-radius: 4px; width: 100%; }
 
-.canvas-container-jtd:not(.container-jtd-fs) { pointer-events: none; }
+.canvas-container-jtd:not(.container-jtd-fs):not(.pointer-events) { pointer-events: none; }
 
 .pure-button { border-radius: 4px !important; }
 
