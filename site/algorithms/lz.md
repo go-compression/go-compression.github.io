@@ -31,10 +31,8 @@ This is the essential idea behind the algorithm, however it should be noted that
 - LZ77 - Lempel-Ziv 77
 - LZ78 - Lempel-Ziv 78
 
-It's also important to understand the difference between LZ77 and LZ78, the first, and most common, Lempel-Ziv algorithms. LZ77 works very similarly to the example above, using a token to represent an offset and length, while LZ78 uses a more complicated dictionary approach. For a more in-depth explanation, make sure to check out [this wonderful article](https://towardsdatascience.com/how-data-compression-works-exploring-lz78-e97e539138) explaining LZ78.
-
-UNFINISHED
+It's also important to understand the difference between LZ77 and LZ78, the first two Lempel-Ziv algorithms. LZ77 works very similarly to the example above, using a token to represent an offset and length, while LZ78 uses a more complicated dictionary approach. For a more in-depth explanation, make sure to check out [this wonderful article](https://towardsdatascience.com/how-data-compression-works-exploring-lz78-e97e539138) explaining LZ78.
 
 ## Implementations
 
-Now because there are so many different variations of Lempel-Ziv algorithms, there isn't a single LZ implementation. WIth that being said, if you are interested in implementing a Lempel-Ziv algorithm yourself, you'll have to choose an algorithm to start with. [LZSS]({% link algorithms/lzss.md %}) is a great starting point as it's a basic evolution of LZ77 and can be implemented very easily while achieving a respectable compression ratio. If you're interested in another algorithm, head back to [the algorithms](#the-algorithms)
+Now because there are so many different variations of Lempel-Ziv algorithms, there isn't a single "LZ" implementation. WIth that being said, if you are interested in implementing a Lempel-Ziv algorithm yourself, you'll have to choose an algorithm to start with. [LZSS]({% link algorithms/lzss.md %}) is a great jumping-off point as it's a basic evolution of LZ77 and can be implemented very easily while achieving a respectable compression ratio. If you're interested in another algorithm, head back to [the algorithms](#the-algorithms) overview.
