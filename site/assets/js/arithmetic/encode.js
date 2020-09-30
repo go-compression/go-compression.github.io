@@ -1,12 +1,18 @@
 
 class Arithmetic {
 
+    delay = 500;
+    autostep = false;
+    autostepElement;
+
+    resize = false;
+
     TopTextSize = 48;
     TopTextColor = "#132743"
 
     TopTextHighlight = "#407088"
 
-    BarPadding = 40;
+    BarPadding = 80;
     BarColor = "#407088"
     BarBorderColor = "#70adb5"
 
@@ -74,12 +80,41 @@ class Arithmetic {
             sliderValueElement.innerHTML = values[handle];
         });
 
+        this.autostepElement = document.getElementById(this.idNamespace + "autostep");
+        this.autostepElement.addEventListener('change', function () { _this.checkAutostep(); });
+
+        this.resizeElement = document.getElementById(this.idNamespace + "resize");
+        this.resizeElement.addEventListener('change', function () { _this.checkResize(); });
+        this.checkResize();
+
+
         const go = new Go();
         WebAssembly.instantiateStreaming(fetch("/assets/wasm/arithmetic.wasm"), go.importObject).then((result) => {
             go.run(result.instance);
         });
 
         this.process();
+    }
+
+    checkAutostep() {
+        if (this.autostepElement.checked) {
+            this.autostep = true;
+            if (!this.stepBtn.disabled) {
+                this.stepThrough();
+            }
+        } else {
+            this.autostep = false;
+        }
+    }
+
+    checkResize() {
+        if (this.resizeElement.checked) {
+            this.resize = true;
+        } else {
+            this.resize = false;
+            this.displayBase = 0;
+            this.displayModifier = 1;
+        }
     }
 
     process() {
@@ -91,7 +126,8 @@ class Arithmetic {
             top: 5,
             fill: this.TopTextColor,
             fontSize: this.TopTextSize,
-            fontFamily: "Roboto Mono"
+            fontFamily: "Roboto Mono",
+            selectable: false
         })
 
         this.canvas.add(this.topText)
@@ -105,11 +141,19 @@ class Arithmetic {
             width: this.canvas.width - this.BarPadding,
             height: 20,
             left: this.BarPadding / 2,
-            top: 120
+            top: 120,
+            visible: false,
+            selectable: false
         })
 
         this.canvas.add(rect)
         this.lastRect = rect;
+
+        this.modifier = 1;
+        this.base = 0;
+
+        this.displayModifier = 1;
+        this.displayBase = 0;
 
         var freqs = this.freqTable(input)
 
@@ -124,21 +168,48 @@ class Arithmetic {
 
         this.stepBtn.disabled = false;
 
+        if (WebAssembly) {
+            // WebAssembly.instantiateStreaming is not currently available in Safari
+            if (WebAssembly && !WebAssembly.instantiateStreaming) { // polyfill
+                WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                    const source = await (await resp).arrayBuffer();
+                    return await WebAssembly.instantiate(source, importObject);
+                };
+            }
+
+            const go = new Go();
+            WebAssembly.instantiateStreaming(fetch("wasm/arithmetic.wasm"), go.importObject).then((result) => {
+                go.run(result.instance);
+            });
+        } else {
+            console.log("WebAssembly is not supported in your browser")
+        }
+
+        var _this = this;
+
+        if (this.delay === 0) {
+            setTimeout(() => (_this.checkAutostep()), 1000);
+        } else {
+            this.checkAutostep();
+        }
+
         // var output = arithmeticEncode(input);
 
         // document.getElementById(this.idNamespace + "output-text").innerHTML = output;
     }
 
-    stepThrough() {
+    async stepThrough() {
         this.highlight(this.topText, this.step, this.TopTextHighlight);
 
         var char = this.input.charAt(this.step);
+
+        await this.sleep(this.delay);
 
         var start = 0;
         var end = 0;
         for (const [key, value] of this.freqs.entries()) {
             if (key === char) {
-                this.selectRange(this.lastRect, key, start, start + value)
+                this.selectRange(this.lastRect, key, start, start + value, this.modifier, this.base)
                 end = start + value;
                 break;
             }
@@ -146,13 +217,34 @@ class Arithmetic {
         }
 
         this.step++;
+        var rect;
 
-        var rect = new fabric.Rect({
-            width: this.canvas.width - this.BarPadding,
-            height: 20,
-            left: this.BarPadding / 2,
-            top: this.lastRect.top + this.lastRect.height + this.CharText + this.RectPadding
-        })
+        this.base = start * this.modifier + this.base;
+        this.modifier *= (end - start);
+        if (!this.resize) {
+            this.displayBase = start * this.displayModifier + this.displayBase;
+            this.displayModifier *= (end - start);
+        }
+
+        if (this.resize) {
+            rect = new fabric.Rect({
+                width: this.canvas.width - this.BarPadding,
+                height: 20,
+                left: this.BarPadding / 2,
+                top: this.lastRect.top + this.lastRect.height + this.CharText + this.RectPadding,
+                visible: false,
+                selectable: false
+            })
+        } else {
+            rect = new fabric.Rect({
+                width: (this.canvas.width - this.BarPadding) * this.displayModifier,
+                height: 20,
+                left: (this.BarPadding / 2) + (this.canvas.width - this.BarPadding) * this.displayBase,
+                top: this.lastRect.top + this.lastRect.height + this.CharText + this.RectPadding,
+                visible: false,
+                selectable: false
+            })
+        }
 
         this.canvas.add(rect)
 
@@ -163,13 +255,27 @@ class Arithmetic {
 
         var last = 0;
         this.freqs.forEach((value, key, map) => {
-            this.createRange(this.lastRect, key, last, last + value, (end - start));
+            this.createRange(this.lastRect, key, last, last + value, this.modifier, this.base);
             this.canvas.renderAll();
             last += value;
         });
 
         if (this.step >= this.input.length) {
             this.stepBtn.disabled = true;
+            var output = ""
+            if (WebAssembly) {
+                var r = arithmeticEncode(this.topText.text)
+                var bot = r[0]
+                var top = r[1]
+                output = bot + " - " + top
+            } else {
+                output = "WebAssembly unsupported"
+            }
+            document.getElementById(this.idNamespace + "output-text").innerHTML = output;
+        }
+
+        if (this.autostep && !this.stepBtn.disabled) {
+            this.stepThrough();
         }
     }
 
@@ -185,20 +291,21 @@ class Arithmetic {
         this.canvas.add(new fabric.Line(coords, {
             fill: this.BarSelectedColor,
             stroke: this.BarSelectedColor,
-            strokeWidth: 2
+            strokeWidth: this.resize ? 2 : 2 * this.displayModifier,
+            selectable: false
         }));
     }
 
-    createRange(rect, char, start, end, modifier) {
-        this.drawRangeWithColors({ rect: rect, char: char, start: start, end: end, modifier: modifier })
+    createRange(rect, char, start, end, modifier, base) {
+        this.drawRangeWithColors({ rect: rect, char: char, start: start, end: end, modifier: modifier, base: base })
     }
 
-    selectRange(rect, char, start, end) {
+    selectRange(rect, char, start, end, modifier, base) {
         var _this = this;
-        this.drawRangeWithColors({ rect: rect, char: char, start: start, end: end, BarColor: _this.BarSelectedColor })
+        this.drawRangeWithColors({ rect: rect, char: char, start: start, end: end, BarColor: _this.BarSelectedColor, modifier: modifier, base: base, select: true })
     }
 
-    drawRangeWithColors({ rect, char, start, end, BarColor = false, BarBorderColor = false, CharText = false, CharColor = false, RangeText = false, RangeColor = false, modifier = 1 }) {
+    drawRangeWithColors({ rect, char, start, end, BarColor = false, BarBorderColor = false, CharText = false, CharColor = false, RangeText = false, RangeColor = false, modifier = 1, base = 0, select = false }) {
         var rangeLeft = rect.left + (start * rect.width);
         var rangeWidth = (end - start) * rect.width;
 
@@ -209,26 +316,34 @@ class Arithmetic {
             top: rect.top,
             fill: BarColor ? BarColor : this.BarColor,
             stroke: BarBorderColor ? BarBorderColor : this.BarBorderColor,
+            strokeWidth: 1 * this.displayModifier,
+            selectable: false
         })
 
         this.canvas.add(range)
 
+        if (select) { return }
+
+        var charFontSize = (modifier == 1 || this.resize) ? this.CharText : this.CharText * this.displayModifier * 2
         var char = new fabric.Text(char, {
             left: rangeLeft + (0.5 * rangeWidth),
-            top: range.top - (CharText ? CharText : this.CharText),
-            fontSize: CharText ? CharText : this.CharText,
+            top: range.top - (CharText ? CharText : charFontSize),
+            fontSize: CharText ? CharText : charFontSize,
             fill: CharColor ? CharColor : this.CharColor,
-            fontFamily: "Roboto Mono"
+            fontFamily: "Roboto Mono",
+            selectable: false
         })
 
         this.canvas.add(char)
 
-        var leftRangeText = new fabric.Text(this.roundDisplay(start * modifier).toString(), {
+        var rangeFontSize = (modifier == 1 || this.resize) ? this.RangeText : this.RangeText * this.displayModifier * 2
+        var leftRangeText = new fabric.Text(this.roundDisplay(base + (start * modifier)).toString(), {
             left: rangeLeft,
-            top: range.top - (RangeText ? RangeText : this.RangeText) - 1,
-            fontSize: RangeText ? RangeText : this.RangeText,
+            top: range.top - (RangeText ? RangeText : rangeFontSize) - 1,
+            fontSize: RangeText ? RangeText : rangeFontSize,
             fill: RangeColor ? RangeColor : this.RangeColor,
-            fontFamily: "Roboto Mono"
+            fontFamily: "Roboto Mono",
+            selectable: false
         })
 
         leftRangeText.left -= leftRangeText.width / 2
@@ -236,12 +351,13 @@ class Arithmetic {
         this.canvas.add(leftRangeText)
 
         if (end === 1) {
-            var rightRangeText = new fabric.Text(this.roundDisplay(end * modifier).toString(), {
+            var rightRangeText = new fabric.Text(this.roundDisplay(base + (end * modifier)).toString(), {
                 left: rangeLeft + rangeWidth - (this.RangeText / 2),
-                top: range.top - (RangeText ? RangeText : this.RangeText) + 1,
-                fontSize: RangeText ? RangeText : this.RangeText,
+                top: range.top - (RangeText ? RangeText : rangeFontSize) + 1,
+                fontSize: RangeText ? RangeText : rangeFontSize,
                 fill: RangeColor ? RangeColor : this.RangeColor,
-                fontFamily: "Roboto Mono"
+                fontFamily: "Roboto Mono",
+                selectable: false
             })
 
             this.canvas.add(rightRangeText)
@@ -298,6 +414,22 @@ class Arithmetic {
             this.isDragging = false;
             this.selection = true;
         });
+        var _this = this;
+        this.canvas.on('mouse:wheel', function (opt) {
+            var delta = opt.e.deltaY;
+            var zoom = _this.canvas.getZoom();
+            zoom *= 0.990 ** delta;
+            if (zoom > 20) zoom = 20;
+            if (zoom < 0.01) zoom = 0.01;
+            _this.canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+            opt.e.preventDefault();
+            opt.e.stopPropagation();
+            // this.texts.forEach(function (textObj) {
+            //     console.log(textObj);
+            //     this.canvas.remove(textObj);
+            //     this.canvas.add(textObj);
+            // });
+        })
     }
 
     getCharacterOfText(text, characterIndex) {
@@ -371,5 +503,9 @@ class Arithmetic {
     highlight(textObj, index, color) {
         var upper = index + 1;
         return this.highlightRange(textObj, index, upper, "", color);
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
