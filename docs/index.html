@@ -87,11 +87,11 @@
 <div id="main-content-wrap" class="main-content-wrap"><div id="main-content" class="main-content" role="main">
 <h1 id="the-hitchhikers-guide-to-compression"> <a href="#the-hitchhikers-guide-to-compression" class="anchor-heading" aria-labelledby="the-hitchhikers-guide-to-compression"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> The Hitchhiker’s Guide to Compression</h1>
 <p>Far out in the uncharted backwaters of the unfashionable end of the western spiral arm of the Galaxy lies a small unregarded yellow sun.</p>
-<p>Orbiting this at a distance of roughly ninety-two million miles is an utterly insignificant little blue green planet whose ape- descended life forms are so amazingly primitive that they still think digital watches are a pretty neat idea.</p>
-<p>This planet has - or rather had - a problem, which was this: files were too big. Many solutions were suggested for solving this problem via lossless compression, such as Lempel-Ziv and Huffman coding, but most of these were implemented into common compression utilities and promptly forgotten. Today, much of the relevant work to compression is in an obscure corner of the internet between lengthy PhD thesis papers and hard-to-find gems.</p>
+<p>Orbiting this at a distance of roughly ninety-two million miles is an utterly insignificant little blue green planet whose ape-descended life forms are so amazingly primitive that they still think digital watches are a pretty neat idea.</p>
+<p>This planet has a problem, which was this: files are too big. Many solutions were suggested for solving this problem via lossless compression, such as Lempel-Ziv and Huffman coding, but most of these were implemented into common compression utilities and promptly forgotten. Today, much of the relevant work to compression is in an obscure corner of the internet between lengthy PhD thesis papers and hard-to-find gems.</p>
 <h2 id="why-compression"> <a href="#why-compression" class="anchor-heading" aria-labelledby="why-compression"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Why compression</h2>
 <p>Lossless file compression, and file compression in general has become a lost art. The modern developer community has moved on from working on compression algorithms to bigger and better problems, such as creating the next major NodeJS framework. However, compression as it stands in the computer science aspect is still as interesting as it was in 1980s, possibly <a href="https://www.webfx.com/internet-real-time/">even more so today</a> with an estimated <a href="http://rcnt.eu/un8bg">463 Exabytes of data to be created everyday in 2025</a>.</p>
-<p>It’s no secret that the internet is growing rapidly, and with it more people are becoming connected. From urban dwellers to rural farmers, fast internet speed are not a given. To counter this, there <a href="https://www.bbc.com/news/technology-44886803">are</a> <a href="https://www.microsoft.com/en-us/corporate-responsibility/airband">numerous</a> <a href="https://en.wikipedia.org/wiki/Starlink">projects</a> focused on improving internet speeds for rural users, but there are almost no projects focused on the other half of improving internet access: compressing data.</p>
+<p>It’s no secret that the internet is growing rapidly, and with it more people are becoming connected. From urban dwellers to rural farmers, fast internet speeds are not a given. To counter this, there <a href="https://www.bbc.com/news/technology-44886803">are</a> <a href="https://www.microsoft.com/en-us/corporate-responsibility/airband">numerous</a> <a href="https://en.wikipedia.org/wiki/Starlink">projects</a> focused on improving internet speeds for rural users, but there are far fewer projects focused on the other half of improving internet access: compressing data.</p>
 <p>These claims about the “lost of art of compression” may seem a bit unsubstantiated, as there are new and actively developed compression projects out there today, such as, but not limited to:</p>
 <ul>
 <li><a href="https://github.com/facebook/zstd">Facebook’s ZSTD</a></li>
@@ -99,18 +99,24 @@
 <li><a href="https://github.com/lz4/lz4">LZ4</a></li>
 <li><a href="https://github.com/kootenpv/shrynk">Shrynk</a></li>
 </ul>
-<p>There are also some other notable projects which I’ve included at the end, but either they aren’t active or universal enough to be included here.</p>
-<p>However this argument still holds true, compression isn’t really mainstream, and I don’t know why it isn’t. Internet speeds is a real problem and better compression stands as a promising solution. The possibilities of better compression are truly endless:</p>
+<p>There are also some other notable projects which I’ve included at the end, but either they aren’t active or universal enough to be included in this short list.</p>
+<p>However this argument still holds true, compression isn’t really mainstream, and I don’t know why it isn’t. Internet speeds are a real problem for much of the world and better compression stands as a promising solution. The possibilities of better compression are truly endless:</p>
 <ul>
 <li>Faster 4k video streaming</li>
-<li>Faster app downloads</li>
-<li>Less delay loading websites and content</li>
+<li>Faster download speeds</li>
+<li>Faster upload speeds</li>
+<li>Faster website and content loading speeds</li>
+<li>Better accessibility to services in regions with poor internet connections</li>
+<li>Higher quality video and voice calls</li>
+<li>Less expensive deep data storage costs</li>
 <li>and more</li>
 </ul>
 <h2 id="the-goal"> <a href="#the-goal" class="anchor-heading" aria-labelledby="the-goal"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> The Goal</h2>
 <p>The goal of this project, and by extension, the goal of all resources here is to <strong>help people learn about compression algorithms</strong> and <strong>encourage people to tinker, build, and experiment</strong> with their own algorithms and implementations. Afterall, the best way to innovate in tech is to get a bunch of developers interested in something and let them lead the way.</p>
 <p>Additionally, this project itself is intended to be a community-sourced resource for people interested in compression algorithms. The idea is that anyone can contribute to this website through GitHub so that this can be a constantly improving and expanding resource for others.</p>
 <p>With all of that said, if you’re interested in learning more about the world of compression, you should <a href="/getting_started/">get started</a>.</p>
+<h2 id="forewarning"> <a href="#forewarning" class="anchor-heading" aria-labelledby="forewarning"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Forewarning</h2>
+<p>As a forewarning it should be noted that although this project is intended to be comprehensive, it is not. This is because the two primary authors, myself, Phillip Cutter, and Arnav Chawla, are currently high school seniors who are working on finishing college applications, schoolwork, internships, and other commitments and do not have the time to continue this project, and <a href="/reference/raisin/">Raisin</a>, at the same rate that they did over the first three months. However, both of us are committed to maintaining this project and improving it for the forseeable future.</p>
 <h2 id="notable-compression-project-mentions"> <a href="#notable-compression-project-mentions" class="anchor-heading" aria-labelledby="notable-compression-project-mentions"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Notable Compression Project Mentions</h2>
 <p>Notable mentions:</p>
 <ul>

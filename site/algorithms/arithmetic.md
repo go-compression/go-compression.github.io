@@ -39,11 +39,11 @@ As we move through this process, this copying of the number line and fitting it 
 
 The answer to this issue is called finite-precision arithmetic coding, with the above approach of fitting the number line within a range known as the infinite-precision version because we (supposedly) have an infinite amount of precision.
 
-Now if we continue this process, we get a range representing 0.06368 to 0.06496. The difference between this two numbers is just 0.00128, a big difference from the 0.2 difference when encoding just "H". You can imagine that larger files will have an even smaller difference between the two ranges, spelling out the need for finite-precision arithmetic coding.
+Now if we continue this process, we get a range representing 0.06368 to 0.06496. The difference between these two numbers is just 0.00128, a big difference from the 0.2 difference when encoding just "H". You can imagine that larger files will have an even smaller difference between the two ranges, spelling out the need for finite-precision arithmetic coding.
 
 ## Stage 2: Binary Search
 
-The next, and luckily final, stage is to run a binary search like algorithm over the table to find a binary range that lays within our range from the first stage.
+The next, and luckily final, stage is to run a binary search-like algorithm over the table to find a binary range that lays within our range from the first stage.
 
 The way this works is actually quite simple. We take our number line from 0 to 1, and lay it out.
 

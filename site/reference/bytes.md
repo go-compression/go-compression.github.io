@@ -114,7 +114,7 @@ This approach is called **big endian ordering**. The other approach is called **
 
 | 01011010 | 11110000 |
 
-Now using big vs litter endian ordering doesn't make a large difference in practice, it's just important that all of the software and hardware interacting with the memory knows which endian ordering it's using. It's also important to ensure that other computers receiving data know what endian ordering the data is being transmitted with so the other computer can correctly interpret the bytes.
+Now using big vs little endian ordering doesn't make a large difference in practice, it's just important that all of the software and hardware interacting with the memory knows which endian ordering it's using. It's also important to ensure that other computers receiving data know what endian ordering the data is being transmitted with so the other computer can correctly interpret the bytes.
 
 If endianness still doesn't make complete sense or you're interested in learning more, you should check out [Computerphile's video about endianness](https://www.youtube.com/watch?v=thrx3SBEpL8) or [the article about it on Wikipedia](https://en.wikipedia.org/wiki/Endianness).
 

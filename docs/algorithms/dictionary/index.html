@@ -101,7 +101,7 @@
 <li>Fries</li>
 <li>Milkshakes</li>
 </ul>
-<p>Rather than writing down “pizza” or “fries” everytime someone order’s pizza or fries, we can assign each item a unique idea, or a code.</p>
+<p>Rather than writing down “pizza” or “fries” everytime someone order’s pizza or fries, we can assign each item a unique code.</p>
 <ul>
 <li>
 <strong>1</strong> - Pizza</li>
@@ -112,7 +112,7 @@
 </ul>
 <p>Now when we’re preparing order tickets for the kitchen, we can simply write 1, 2, or 3. This simple concept is used to improve upon the most advanced modern compression algorithms.</p>
 <h2 id="implementation"> <a href="#implementation" class="anchor-heading" aria-labelledby="implementation"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Implementation</h2>
-<p>Implementing a dictionary coder and decoder is actually <strong>very</strong> simple. All we’re really doing is replacing the long text with corresponding codes to encode it, and doing replacing codes with the text it represents to decode it.</p>
+<p>Implementing a dictionary coder and decoder is actually <strong>very</strong> simple. All we’re really doing is replacing the long text with corresponding codes to encode it, and replacing codes with the text it represents to decode it.</p>
 <p>Here’s a sample:</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">text</span> <span class="o">=</span> <span class="s">"Order: pizza, fries, milkshake"</span>
 <span class="n">encoded</span> <span class="o">=</span> <span class="n">text</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"pizza"</span><span class="p">,</span> <span class="s">"1"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"fries"</span><span class="p">,</span> <span class="s">"2"</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">"milkshake"</span><span class="p">,</span> <span class="s">"3"</span><span class="p">)</span>
