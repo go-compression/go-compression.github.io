@@ -115,7 +115,7 @@ class Arithmetic {
 
         var last = 0;
         freqs.forEach((value, key, map) => {
-            this.createRange(rect, key, last, last + value);
+            this.createRange(rect, key, last, last + value, 1);
             this.canvas.renderAll();
             last += value;
         });
@@ -163,7 +163,7 @@ class Arithmetic {
 
         var last = 0;
         this.freqs.forEach((value, key, map) => {
-            this.createRange(this.lastRect, key, last, last + value);
+            this.createRange(this.lastRect, key, last, last + value, (end - start));
             this.canvas.renderAll();
             last += value;
         });
@@ -189,8 +189,8 @@ class Arithmetic {
         }));
     }
 
-    createRange(rect, char, start, end) {
-        this.drawRangeWithColors({ rect: rect, char: char, start: start, end: end })
+    createRange(rect, char, start, end, modifier) {
+        this.drawRangeWithColors({ rect: rect, char: char, start: start, end: end, modifier: modifier })
     }
 
     selectRange(rect, char, start, end) {
@@ -198,7 +198,7 @@ class Arithmetic {
         this.drawRangeWithColors({ rect: rect, char: char, start: start, end: end, BarColor: _this.BarSelectedColor })
     }
 
-    drawRangeWithColors({ rect, char, start, end, BarColor = false, BarBorderColor = false, CharText = false, CharColor = false, RangeText = false, RangeColor = false }) {
+    drawRangeWithColors({ rect, char, start, end, BarColor = false, BarBorderColor = false, CharText = false, CharColor = false, RangeText = false, RangeColor = false, modifier = 1 }) {
         var rangeLeft = rect.left + (start * rect.width);
         var rangeWidth = (end - start) * rect.width;
 
@@ -223,7 +223,7 @@ class Arithmetic {
 
         this.canvas.add(char)
 
-        var leftRangeText = new fabric.Text(start.toString(), {
+        var leftRangeText = new fabric.Text(this.roundDisplay(start * modifier).toString(), {
             left: rangeLeft,
             top: range.top - (RangeText ? RangeText : this.RangeText) - 1,
             fontSize: RangeText ? RangeText : this.RangeText,
@@ -236,7 +236,7 @@ class Arithmetic {
         this.canvas.add(leftRangeText)
 
         if (end === 1) {
-            var rightRangeText = new fabric.Text(end.toString(), {
+            var rightRangeText = new fabric.Text(this.roundDisplay(end * modifier).toString(), {
                 left: rangeLeft + rangeWidth - (this.RangeText / 2),
                 top: range.top - (RangeText ? RangeText : this.RangeText) + 1,
                 fontSize: RangeText ? RangeText : this.RangeText,
@@ -246,6 +246,10 @@ class Arithmetic {
 
             this.canvas.add(rightRangeText)
         }
+    }
+
+    roundDisplay(num) {
+        return +(Math.round(num + "e+3") + "e-3");
     }
 
     freqTable(str) {
