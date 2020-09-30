@@ -24,7 +24,7 @@ So let's say we're working in a restaurant and we have to communicate to the che
 - Fries
 - Milkshakes
 
-Rather than writing down "pizza" or "fries" everytime someone order's pizza or fries, we can assign each item a unique idea, or a code.
+Rather than writing down "pizza" or "fries" everytime someone order's pizza or fries, we can assign each item a unique code.
 
 - **1** - Pizza
 - **2** - Fries
@@ -34,7 +34,7 @@ Now when we're preparing order tickets for the kitchen, we can simply write 1, 2
 
 ## Implementation
 
-Implementing a dictionary coder and decoder is actually **very** simple. All we're really doing is replacing the long text with corresponding codes to encode it, and doing replacing codes with the text it represents to decode it.
+Implementing a dictionary coder and decoder is actually **very** simple. All we're really doing is replacing the long text with corresponding codes to encode it, and replacing codes with the text it represents to decode it.
 
 Here's a sample:
 

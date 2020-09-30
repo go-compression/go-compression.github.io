@@ -11,15 +11,16 @@ The following is intended to be a comprehensive list of lossless compression alg
 
 - Run-length Coding
 - Range Coding
-- Lempel-Ziv
+- [Lempel-Ziv]({% link algorithms/lz.md %})
   - LZ77
   - LZ78
-  - LZSS
+  - [LZSS]({% link algorithms/lz.md %})
   - LZW
+- [Dictionary Coding]({% link algorithms/dictionary.md %})
 - Variable-length Coding
-- Huffman Coding
-- Arithmetic Coding
-- Dynamic Markov Compression
+- [Huffman Coding]({% link algorithms/huffman.md %})
+- [Arithmetic Coding]({% link algorithms/arithmetic.md %})
+- [Dynamic Markov Compression]({% link algorithms/dmc.md %})
 - FLATE
 
 For a more complete list, check out these Wikipedia pages on [lossless algorithms](https://en.wikipedia.org/wiki/Category:Lossless_compression_algorithms) and [lossy algorithms](https://en.wikipedia.org/wiki/Category:Lossy_compression_algorithms).

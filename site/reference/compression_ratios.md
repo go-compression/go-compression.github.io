@@ -9,7 +9,9 @@ parent: Reference
 
 Compression ratios are generally used to represent how good a compression algorithm is at compressing. Generally, this is represented as the uncompressed size divided by the compressed size, yielding a number (hopefully) greater than 1. The higher the compression ratio, the better the compression algorithm is.
 
-![](/assets/CompressionRatio.svg)
+<p align="center">
+  <img src="/assets/CompressionRatio.svg" alt="Compression Ratio Equation"/>
+</p>
 
 > Equation from [Wikipedia](https://en.wikipedia.org/wiki/Data_compression_ratio)
 

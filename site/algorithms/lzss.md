@@ -10,7 +10,7 @@ nav_order: 1
 
 Lempel-Ziv-Storer-Szymanski, which we'll refer to as LZSS, is a simple variation of the common [LZ77]({% link algorithms/lz.md %}) algorithm. It uses the same token concept with an offset and length to tell the decoder where to copy the text, except it only places the token when the token is shorter than the text it is replacing.
 
-The idea behind this is that it will never increase the size of a file by adding tokens everywhere for repeated letters. You can imagine that LZ77 would easily increase the file size if it simply encoded every repeated letter "e" or "i" as a token, which may take at least 5 bytes depending on the file and implementation.
+The idea behind this is that it will never increase the size of a file by adding tokens everywhere for repeated letters. You can imagine that LZ77 would easily increase the file size if it simply encoded every repeated letter "e" or "i" as a token, which may take at least 5 bytes depending on the file and implementation instead of just 1 for LZSS.
 
 ## Implementing an Encoder
 
@@ -41,11 +41,11 @@ DO WOULD YOU LIKE GREEN EGGS AND HAM?
 I<69,15>EM,<113,8>.<29,15>GR<64,16>.
 ```
 
-This encoded, or compressed, version only takes 148 bytes to store (without a [magic type](https://linux.die.net/man/5/magic) to describe the file type), which is a 77% of the original file size, or a compression ratio of 1.3. Not bad!
+This encoded, or compressed, version only takes 148 bytes to store (without a [magic type](https://linux.die.net/man/5/magic) to describe the file type), which is 77% of the original file size, or a compression ratio of 1.3. Not bad!
 
 ### Analysis
 
-Now let's take a second understand what's happening before you start trying to conquer the world with LZSS.
+Now let's take a second to understand what's happening before you start trying to conquer the world with LZSS.
 
 As we can see, the "tokens" are reducing the size of the file by referencing pieces of text that are longer than the actual token. Let's look at the first line:
 
@@ -55,7 +55,7 @@ I AM SAM. <10,10>SAM I AM.
 
 The encoder works character by character. On the first character, 'I', it checks it's search buffer to see if it's already seen an 'I'. The search buffer is essentially the encoder's memory, for every character it encodes, it adds it into the search buffer so it can "remember" it. Because it hasn't seen an 'I' already (the search buffer is empty), it just outputs an 'I', adds it to the search buffer, and moves to the next character. The next character is ' ' (a space). The encoder checks the search buffer to see if it's seen a space before, and it hasn't so it outputs the space and moves forward.
 
-Once it gets to the second space (after "I AM"), the LZ77 starts to come into play. It's already seen a space before because it's in the search buffer so it's ready to output a token, but first it tries to maximize how much text the token is referencing. If it didn't do this you could imagine that for every character it's already seen it would output something similar to `<5,1>`, which is 5 times larger than any character. So once it finds a character that it's already seen, it moves on to the next character and checks if it's already seen the next character directly after the previous character. Once it finds a sequence of characters that it hasn't already seen, then it goes back one character to the sequence of characters it's already seen and prepares the token.
+Once it gets to the second space (after "I AM"), LZ77 comes into play. It's already seen a space before because it's in the search buffer so it's ready to output a token, but first it tries to maximize how much text the token is referencing. If it didn't do this you could imagine that for every character it's already seen it would output something similar to `<5,1>`, which is 5 times larger than any character. So once it finds a character that it's already seen, it moves on to the next character and checks if it's already seen the next character directly after the previous character. Once it finds a sequence of characters that it hasn't already seen, then it goes back one character to the sequence of characters it's already seen and prepares the token.
 
 Once the token is ready, the difference between LZ77 and LZSS starts to shine. At this point LZ77 simply outputs the token, adds the characters to the search buffer and continues. LZSS does something a little smarter, it will check to see if the size of the outputted token is larger than the text it's representing. If so, it will output the text it represents, not the token, add the text to the search buffer, and continue. If not, it will output the token, add the text it represents to the search buffer and continue.
 
@@ -63,7 +63,7 @@ Once the token is ready, the difference between LZ77 and LZSS starts to shine. A
 
 Coming back to our example, the space character has already been seen, but a space followed by an "S" hasn't been seen yet (" S"), so we prepare the token representing the space. The token in our case would be "<3,1>", which means go back three characters and copy 1 character(s). Next we check to see if our token is longer than our text, and "<3,1>" is indeed longer than " ", so it wouldn't make sense to output the token, so we output the space, add it to our search buffer, and continue.
 
-This entire process continues until we get to the "I AM SAM. ". At this point we've already seen an "I AM SAM. " but haven't seen an "I AM SAM. S" so we know our token will represent "I AM SAM. ". Then we check to see if "I AM SAM. " is longer than "<10,10>", which it is, so we output the token, add the text to our search buffer and go along.
+This entire process continues until we get to the "I AM SAM. ". At this point we've already seen an "I AM SAM. " but haven't seen an "I AM SAM. S" so we know our token will represent "I AM SAM. ". Then we check to see if "I AM SAM. " is longer than "<10,10>", which it is, so we output the token, add the text to our search buffer and continue along.
 
 ![](/assets/LZ2.png)
 
@@ -114,7 +114,8 @@ O
 
 Although the code is functionally pretty simple, there's a few important things going on here. You can see that looping character-by-character isn't as simple as `for char in text`, first we have to encode it and then loop over the encoding. This is because it converts our string into an array of [bytes]({% link reference/reference.md %}), represented as a Python object called `bytes`. When we print the character out, we have to convert it from a byte (represented as a Python `int`) back to a string so we can see it.
 
-The reason we do this is because a byte is really just a number from 0-255 as it is represented in your computer as 8 1's and 0's, called [binary](https://en.wikipedia.org/wiki/Binary_code). If you don't already have a basic understanding of how computers store our language, you should get acquainted with it on our [getting started]({% link getting_started.md %}) page.
+The reason we do this is because a byte is really just a number from 0-255 as it is represented in your computer as 8 1's and 0's, called [binary](https://en.wikipedia.org/wiki/Binary_code). If you don't already have a basic understanding of how computers store our language, you should get acquainted with it on our [encodings]({% link
+reference/encodings.md %}) page.
 
 ### Search Buffers
 
@@ -129,7 +130,7 @@ text_bytes = text.encode(encoding)
 search_buffer = [] # Array of integers, representing bytes
 
 for char in text_bytes:
-	print(bytes([char]).decode(encoding)) # Print the character
+    print(bytes([char]).decode(encoding)) # Print the character
     search_buffer.append(char) # Add the character to our search buffer
 ```
 
@@ -283,7 +284,7 @@ Moving on to our main function loop we can see now have `check_characters` defin
 
 Now we have the best part: the logic. If we couldn't find a match or it's the last character we want to output something. If we couldn't find more than one character in the `search_buffer` then that means `check_characters` minus the last character was found, so we'll output a token representing `check_characters` minus the last character. Otherwise, we couldn't find a match for a single character so let's just output that character.
 
-And that's essentially LZ77! Try it out for yourself with some different strings to see for yourself. However you might notice that we're trying to implement LZSS, not LZ77, so we have one more piece to implement.
+And that's essentially LZ77! Try it out for yourself with some different strings to see for yourself. However, you might notice that we're trying to implement LZSS, not LZ77, so we have one more piece to implement.
 
 ### Comparing Token Sizes
 
@@ -336,7 +337,7 @@ The key is the `len(token) > length` which checks if the length of the token is 
 
 The last piece to the puzzle is something you might have noticed if you're already trying to compress large file: the search buffer gets **big**. Let's say we're compressing a 1 Gb file. After we go over each character, we add it to the search buffer and continue, though each iteration we also search the entire search buffer for certain characters. This quickly adds up for larger files. In our 1 Gb file scenario, near the end we'll have to search almost 1 billion bytes to **encode a single character**.
 
-It should be pretty obvious that this _very inefficient_. And unfortunately, there is no magic solution, you have to make a tradeoff. With every compression algorithm you have to decide between speed and compression ratio. Do you want a fast algorithm that can't reduce the file size very much, or a slow algorithm that reduces the file size more? The answer is: it depends. And so, the tradeoff in LZ77's case is to create a "sliding window".
+It should be pretty obvious that this _very inefficient_. And unfortunately, there is no magic solution. You have to make a tradeoff. With every compression algorithm you have to decide between speed and compression ratio. Do you want a fast algorithm that can't reduce the file size very much, or a slow algorithm that reduces the file size more? The answer is: it depends. And so, the tradeoff in LZ77's case is to create a "sliding window".
 ![](/assets/LZ3.png)
 
 The "sliding window" is actually quite simple, all you do is cap off the maximum size of the search buffer. When you add a character to the search buffer that makes it larger than the maximum size of the sliding window then you remove the first character. That way the window is "sliding" as you move through the file, and the algorithm doesn't slow down!
@@ -348,7 +349,7 @@ max_sliding_window_size = 4096
 
 for char in text_bytes:
 
-	...
+    ...
 
     search_buffer.append(char) # Add the character to our search buffer
 
@@ -418,7 +419,7 @@ The function definition is pretty simple, we can just move our `text` and `max_s
 
 The finished code can be found in [lzss.py](https://github.com/go-compression/examples/blob/master/lz/lzss/lzss_encoder.py) in the examples GitHub repo.
 
-Lastly, there's a few bug in our program that we encounter with larger files. If we have some text, for example:
+Lastly, there's a few bugs in our program that we encounter with larger files. If we have some text, for example:
 
 ```
 ISAM YAM SAM
@@ -426,7 +427,7 @@ ISAM YAM SAM
 
 When the encoder gets to the space right before the "SAM", it will look for a space in the search buffer which it finds. Then it will search for a space and an "S" (" S") which it doesn't find, so it continues and starts looking for an "A". The issue here is that it skips looking for an "S" and continues to encode the "AM" not the "SAM".
 
-In some rare circumstances the code may generate a reference that with a length that is larger than its offset which will result in an error.
+In some rare circumstances the code may generate a reference with a length that is larger than its offset which will result in an error.
 
 To fix this, we'll need to rewrite the logic in our encoder a little bit.
 
@@ -475,7 +476,7 @@ To resolve the other problem we simply have to move the `search_buffer.append(ch
 
 What's the use of encoding something some text if we can't decode it? For that we'll need to build ourselves a decoder.
 
-Luckily for us, building a decoder is actually much simpler than an encoder because all it needs to know how to do is convert a token ("<5,2>") into the literal text it represents. The decoder doesn't care about search buffers, sliding windows, or token lengths, it only has one job.
+Luckily for us, building a decoder is actually much simpler than an encoder because all it needs to know how to do is convert a token ("<5,2>") into the literal text it represents. The decoder doesn't care about search buffers, sliding windows, or token lengths, it has only one job.
 
 So, let's get started. We're going to decode character-by-character just like our encoder so we'll start with our main loop inside of a function. We'll also need to encode and decode the strings so we'll keep the `encoding = "utf-8"`.
 
@@ -654,4 +655,4 @@ One thing to keep in mind is that when we refer to a "character", we really mean
 - 3 bytes - 话
 - 6 bytes - يَّ
 
-If you're interested in learning more about how bytes work, check out the Wikipedia articles on [Bytes](https://en.wikipedia.org/wiki/Byte) and [Unicode](https://en.wikipedia.org/wiki/Unicode).
+If you're interested in learning more about how bytes work, check out the Wikipedia articles on [Bytes](https://en.wikipedia.org/wiki/Byte) and [Unicode](https://en.wikipedia.org/wiki/Unicode) or our reference page on [bytes]({% link reference/bytes.md %}).

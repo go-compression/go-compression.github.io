@@ -12,7 +12,7 @@ Dynamic Markov Compression is an obscure form of compression that uses [Markov c
 
 ## Markov Chains
 
-Markov Chains are a simple way to model the transition between states based on a measureable probability. For example, if we could use a Markov Chain to model the probability that it will become sunny if it's already raining, or vice-versa.
+Markov Chains are a simple way to model the transitions between states based on a measureable probability. For example, we could use a Markov Chain to model the weather and the probability that it will become sunny if it's already raining, or vice-versa.
 
 ![Markov Chain diagram for sunny and rainy states](/assets/MarkovChains.png)
 
