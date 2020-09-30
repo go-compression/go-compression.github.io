@@ -187,8 +187,8 @@ class Arithmetic {
 
         var _this = this;
 
-        if (this.delay === 0) {
-            setTimeout(() => (_this.checkAutostep()), 1000);
+        if (this.delay < 500) {
+            setTimeout(() => (_this.checkAutostep()), 1500);
         } else {
             this.checkAutostep();
         }
