@@ -26,6 +26,8 @@ class Arithmetic {
 
     RectPadding = 24;
 
+    wasmReady = false;
+
     constructor({ ns = "encode-", fs = false }) {
         this.idNamespace = ns;
         this.fullscreen = fs;
@@ -45,7 +47,8 @@ class Arithmetic {
         this.canvas = new fabric.Canvas(this.idNamespace + "canvas", {
             selection: false,
             evented: false,
-            enableRetinaScaling: true
+            enableRetinaScaling: true,
+            allowTouchScrolling: true
         })
 
         this.setupPanning();
@@ -88,10 +91,23 @@ class Arithmetic {
         this.checkResize();
 
 
-        const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("/assets/wasm/arithmetic.wasm"), go.importObject).then((result) => {
-            go.run(result.instance);
-        });
+        if (WebAssembly) {
+            // WebAssembly.instantiateStreaming is not currently available in Safari
+            if (WebAssembly && !WebAssembly.instantiateStreaming) { // polyfill
+                WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                    const source = await (await resp).arrayBuffer();
+                    return await WebAssembly.instantiate(source, importObject);
+                };
+            }
+
+            const go = new Go();
+            WebAssembly.instantiateStreaming(fetch("/assets/wasm/arithmetic.wasm"), go.importObject).then((result) => {
+                go.run(result.instance);
+                _this.wasmReady = true;
+            });
+        } else {
+            console.log("WebAssembly is not supported in this browser")
+        }
 
         this.process();
     }
@@ -168,30 +184,9 @@ class Arithmetic {
 
         this.stepBtn.disabled = false;
 
-        if (WebAssembly) {
-            // WebAssembly.instantiateStreaming is not currently available in Safari
-            if (WebAssembly && !WebAssembly.instantiateStreaming) { // polyfill
-                WebAssembly.instantiateStreaming = async (resp, importObject) => {
-                    const source = await (await resp).arrayBuffer();
-                    return await WebAssembly.instantiate(source, importObject);
-                };
-            }
-
-            const go = new Go();
-            WebAssembly.instantiateStreaming(fetch("wasm/arithmetic.wasm"), go.importObject).then((result) => {
-                go.run(result.instance);
-            });
-        } else {
-            console.log("WebAssembly is not supported in your browser")
-        }
-
         var _this = this;
 
-        if (this.delay < 500) {
-            setTimeout(() => (_this.checkAutostep()), 1500);
-        } else {
-            this.checkAutostep();
-        }
+        this.checkAutostep();
 
         // var output = arithmeticEncode(input);
 
@@ -264,14 +259,34 @@ class Arithmetic {
             this.stepBtn.disabled = true;
             var output = ""
             if (WebAssembly) {
-                var r = arithmeticEncode(this.topText.text)
-                var bot = r[0]
-                var top = r[1]
-                output = bot + " - " + top
+                var _this = this;
+                function outputEncoded() {
+                    var r = arithmeticEncode(_this.topText.text)
+                    var bot = r[0]
+                    var top = r[1]
+                    var output = bot + " - " + top
+                    document.getElementById(_this.idNamespace + "output-text").innerHTML = output;
+                }
+                var i = 0;
+                function checkWasmReady() {
+                    i++;
+                    console.log(i);
+                    if (i > 600) {
+                        output = "WebAssembly is not loading";
+                        document.getElementById(_this.idNamespace + "output-text").innerHTML = output;
+                        return
+                    }
+                    if (_this.wasmReady) {
+                        outputEncoded();
+                    } else {
+                        setTimeout(checkWasmReady, 50);
+                    }
+                }
+                checkWasmReady();
             } else {
-                output = "WebAssembly unsupported"
+                output = "WebAssembly unsupported";
+                document.getElementById(this.idNamespace + "output-text").innerHTML = output;
             }
-            document.getElementById(this.idNamespace + "output-text").innerHTML = output;
         }
 
         if (this.autostep && !this.stepBtn.disabled) {
@@ -414,11 +429,16 @@ class Arithmetic {
             this.isDragging = false;
             this.selection = true;
         });
+
+        var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+        var zoomRatio = 0.980;
+        if (isChrome) { zoomRatio = 0.999; }
+
         var _this = this;
         this.canvas.on('mouse:wheel', function (opt) {
             var delta = opt.e.deltaY;
             var zoom = _this.canvas.getZoom();
-            zoom *= 0.990 ** delta;
+            zoom *= zoomRatio ** delta;
             if (zoom > 20) zoom = 20;
             if (zoom < 0.01) zoom = 0.01;
             _this.canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
