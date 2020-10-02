@@ -8,7 +8,7 @@ has_children: true
 
 # Lempel-Ziv
 
-Lempel-Ziv, commonly referred to as LZ77/LZ78 depending on the variant, is one of the oldest, most simplistic, and widespread compression algorithms out there. It's power comes from its simplicity, speed, and decent compression rates. Now before we dive into an implementation, let's understand the concept behind Lempel-Ziv and the various algorithms it has spawned.
+Lempel-Ziv, commonly referred to as LZ77/LZ78 depending on the variant, is one of the oldest, most simplistic, and widespread compression algorithms out there. Its power comes from its simplicity, speed, and decent compression rates. Now before we dive into an implementation, let's understand the concept behind Lempel-Ziv and the various algorithms it has spawned.
 
 ## The Algorithm(s)
 

@@ -90,7 +90,7 @@
 <li class="breadcrumb-nav-list-item"><span>Lempel-Ziv</span></li>
 </ol></nav><div id="main-content" class="main-content" role="main">
 <h1 id="lempel-ziv"> <a href="#lempel-ziv" class="anchor-heading" aria-labelledby="lempel-ziv"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Lempel-Ziv</h1>
-<p>Lempel-Ziv, commonly referred to as LZ77/LZ78 depending on the variant, is one of the oldest, most simplistic, and widespread compression algorithms out there. It’s power comes from its simplicity, speed, and decent compression rates. Now before we dive into an implementation, let’s understand the concept behind Lempel-Ziv and the various algorithms it has spawned.</p>
+<p>Lempel-Ziv, commonly referred to as LZ77/LZ78 depending on the variant, is one of the oldest, most simplistic, and widespread compression algorithms out there. Its power comes from its simplicity, speed, and decent compression rates. Now before we dive into an implementation, let’s understand the concept behind Lempel-Ziv and the various algorithms it has spawned.</p>
 <h2 id="the-algorithms"> <a href="#the-algorithms" class="anchor-heading" aria-labelledby="the-algorithms"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> The Algorithm(s)</h2>
 <p>Lempel-Ziv at its core is very simple. It works by taking an input string of characters, finding repetitive characters, and outputting an “encoded” version. To get an idea of it, here’s an example.</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Original: Hello everyone! Hello world!
