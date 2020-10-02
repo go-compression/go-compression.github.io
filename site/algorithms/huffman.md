@@ -14,11 +14,11 @@ Since it's creation by David A. Huffman in 1952, Huffman coding has been regarde
 
 Although huffman encoding may seem confusing from an outside view, we can break it into three simple steps:
 
-- [Frequency Counting](#Frequency-Counting)
+- [Frequency Counting](#frequency-counting)
 
-- [Tree Building](#Tree-Building)
+- [Tree Building](#tree-Building)
 
-- [Character Encoding](#Character-Encoding)
+- [Character Encoding](#character-Encoding)
 
 ## Frequency Counting
 
@@ -78,8 +78,8 @@ Character encoding is the final step for most huffman encoders. Once a tree and 
 
 This can be done in two ways.
 
-- [Tree Traversal](#Tree-Traversal)
-- [Array Indexing](#Array-Indexing)
+- [Tree Traversal](#tree-traversal)
+- [Array Indexing](#array-indexing)
 
 ### Tree Traversal
 
@@ -87,7 +87,7 @@ Tree traversal is the first way of encoding the input of a huffman encoder. For 
 
 This method can easily get complicated and very inefficient as the tree has to be traversed multiple times.
 
-For a simpler and quicker solution, we can use [Array Indexing](#Array-Indexing)
+For a simpler and quicker solution, we can use [Array Indexing](#array-indexing)
 
 ### Array Indexing
 

@@ -94,9 +94,9 @@
 <h1 id="the-algorithm"> <a href="#the-algorithm" class="anchor-heading" aria-labelledby="the-algorithm"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> The Algorithm</h1>
 <p>Although huffman encoding may seem confusing from an outside view, we can break it into three simple steps:</p>
 <ul>
-<li><p><a href="#Frequency-Counting">Frequency Counting</a></p></li>
-<li><p><a href="#Tree-Building">Tree Building</a></p></li>
-<li><p><a href="#Character-Encoding">Character Encoding</a></p></li>
+<li><p><a href="#frequency-counting">Frequency Counting</a></p></li>
+<li><p><a href="#tree-Building">Tree Building</a></p></li>
+<li><p><a href="#character-Encoding">Character Encoding</a></p></li>
 </ul>
 <h2 id="frequency-counting"> <a href="#frequency-counting" class="anchor-heading" aria-labelledby="frequency-counting"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Frequency Counting</h2>
 <p>Let’s start out by going over the frequency counting step. Throughout all of the examples, I will be using the following sample input string:</p>
@@ -194,13 +194,13 @@ THAT SAM-I-AM! THAT SAM-I-AM! I DO NOT LIKE THAT SAM-I-AM!
 <p>Character encoding is the final step for most huffman encoders. Once a tree and frequency table has built, the final step is to encode the characters from the initial file and write the encoded bytes to a new file.</p>
 <p>This can be done in two ways.</p>
 <ul>
-<li><a href="#Tree-Traversal">Tree Traversal</a></li>
-<li><a href="#Array-Indexing">Array Indexing</a></li>
+<li><a href="#tree-traversal">Tree Traversal</a></li>
+<li><a href="#array-indexing">Array Indexing</a></li>
 </ul>
 <h3 id="tree-traversal"> <a href="#tree-traversal" class="anchor-heading" aria-labelledby="tree-traversal"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Tree Traversal</h3>
 <p>Tree traversal is the first way of encoding the input of a huffman encoder. For each character, the tree is traversed recursively until a leaf with a matching character is found.</p>
 <p>This method can easily get complicated and very inefficient as the tree has to be traversed multiple times.</p>
-<p>For a simpler and quicker solution, we can use <a href="#Array-Indexing">Array Indexing</a></p>
+<p>For a simpler and quicker solution, we can use <a href="#array-indexing">Array Indexing</a></p>
 <h3 id="array-indexing"> <a href="#array-indexing" class="anchor-heading" aria-labelledby="array-indexing"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Array Indexing</h3>
 <p>When compared to the previous tree traversal method, array indexing is much less complicated and significantly faster.</p>
 <p>Before encoding the characters, the tree is traversed once and the values for each leaf are outputted in two corresponding arrays. The first array contains the value of each character, while the second contains its updated bit value.</p>
