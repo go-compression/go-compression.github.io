@@ -182,14 +182,14 @@ THAT SAM-I-AM! THAT SAM-I-AM! I DO NOT LIKE THAT SAM-I-AM!
 </table></div>
 <p>As displayed above, the table is sorted to ensure consistency in each step of the compression process.</p>
 <h2 id="tree-building"> <a href="#tree-building" class="anchor-heading" aria-labelledby="tree-building"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Tree Building</h2>
-<p>Once the frequency table is created, the huffman encoder builds a huffman tree. A huffman tree follows the same structure as a normal binary tree, containing nodes and leafs. Each Huffman Leaf contains two values, the frequency it’s corresponding value.</p>
+<p>Once the frequency table is created, the huffman encoder builds a huffman tree. A huffman tree follows the same structure as a normal binary tree, containing nodes and leafs. Each Huffman Leaf contains two values, the character and it’s corresponding frequency.</p>
 <p>To build the tree, we traverse our table of frequencies and characters, and push the characters with the highest frequencies to the top of tree. Continuing the traversal until each table value is represented on a Huffman Leaf.</p>
 <p>That might be confusing, so lets break it down step by step.</p>
 <p>Huffman compression works by taking existing 8 bit characters and assigning them to a smaller number of bits. To optimize the compression, the characters with the highest frequency are given smaller bit values.</p>
 <p>A Huffman Tree helps us assign and visualize the new bit value assigned to existing characters. Similar to a binary tree, if we start at the root node, we can traverse the tree by using 1 to move to the right and 0 to move to the left. The position of a leaf node relative the root node is used to determine it’s new bit value.</p>
 <p>A huffman tree for our example is depicted below: <img src="https://i.ibb.co/jyPPwnw/Screen-Shot-2020-08-31-at-10-34-00-AM.png" alt="Sample Huffman Tree"></p>
 <p>As shown in the image, Huffman trees can get very large and complicated very easily. To see a sample tree for any text go to url.</p>
-<p>To understand more about the programatic implementation of tree building, click here.</p>
+<p>To understand more about the programatic implementation of tree building, <a href="/algorithms/huffam-program/">click here</a>.</p>
 <h2 id="character-encoding"> <a href="#character-encoding" class="anchor-heading" aria-labelledby="character-encoding"><svg viewbox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Character Encoding</h2>
 <p>Character encoding is the final step for most huffman encoders. Once a tree and frequency table has built, the final step is to encode the characters from the initial file and write the encoded bytes to a new file.</p>
 <p>This can be done in two ways.</p>

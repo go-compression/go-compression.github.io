@@ -55,7 +55,7 @@ As displayed above, the table is sorted to ensure consistency in each step of th
 
 ## Tree Building
 
-Once the frequency table is created, the huffman encoder builds a huffman tree. A huffman tree follows the same structure as a normal binary tree, containing nodes and leafs. Each Huffman Leaf contains two values, the frequency it's corresponding value.
+Once the frequency table is created, the huffman encoder builds a huffman tree. A huffman tree follows the same structure as a normal binary tree, containing nodes and leafs. Each Huffman Leaf contains two values, the character and it's corresponding frequency.
 
 To build the tree, we traverse our table of frequencies and characters, and push the characters with the highest frequencies to the top of tree. Continuing the traversal until each table value is represented on a Huffman Leaf.
 
@@ -70,7 +70,7 @@ A huffman tree for our example is depicted below:
 
 As shown in the image, Huffman trees can get very large and complicated very easily. To see a sample tree for any text go to url.
 
-To understand more about the programatic implementation of tree building, click here.
+To understand more about the programatic implementation of tree building, [click here]({% link algorithms/huffam-program.md %}).
 
 ## Character Encoding
 
