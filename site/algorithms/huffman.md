@@ -70,7 +70,7 @@ A huffman tree for our example is depicted below:
 
 As shown in the image, Huffman trees can get very large and complicated very easily. To see a sample tree for any text go to url.
 
-To understand more about the programatic implementation of tree building, click here.
+To understand more about the programatic implementation of tree building, [click here]({% link algorithms/huffman-program.md %}).
 
 ## Character Encoding
 
