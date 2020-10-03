@@ -13,4 +13,4 @@ Push an array of huffman leaf objects containing each character and its associat
 
 Using this new node, push the node into the priority qeuue. 
 
-Continue this process untile the size of the queue is 1. 
+Continue this process until the size of the queue is 1. 
