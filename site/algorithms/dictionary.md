@@ -8,7 +8,7 @@ has_children: false
 
 # Dictionary Coding
 
-Dictionary coding one of the most primitive and powerful forms of compression that exists currently. In fact, we use it everyday in English. I've actually used it already. Did you catch that?
+Dictionary coding is one of the most primitive and powerful forms of compression that exists currently. In fact, we use it everyday in English. I've actually used it already. Did you catch that?
 
 The contraction "I've" is technically a form of dictionary coding because when we read the word we automatically expand it to "I have" in our mind. This simple concept is used everywhere from spoken languages, mathematic functions, to file encodings.
 
