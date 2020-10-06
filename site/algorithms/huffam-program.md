@@ -11,6 +11,6 @@ nav_order: 1
 ## General Implementation
 Push an array of huffman leaf objects containing each character and its associated frequency into a priority queue. To start building the tree, pop two leafs from the queue and assign them as the left and right leafs for a node. 
 
-Using this new node, push the node into the priority qeuue. 
+Using this new node, push the node into the priority queue. 
 
 Continue this process until the size of the queue is 1. 
